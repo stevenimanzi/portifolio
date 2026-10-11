@@ -1,0 +1,257 @@
+.syntax-hero {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.syntax-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  height: 100%;
+  padding: 2rem 4rem;
+  padding-top: 80px;
+}
+
+/* Top Bar */
+.syntax-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.syntax-top-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.syntax-brand {
+  color: #fff;
+}
+
+.syntax-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #3b82f6;
+}
+
+.syntax-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #3b82f6;
+  animation: pulse-neon 2s infinite;
+}
+
+@keyframes pulse-neon {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.syntax-top-right {
+  display: flex;
+  gap: 4rem;
+}
+
+.syntax-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.syntax-link {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.syntax-link:hover {
+  color: #3b82f6;
+}
+
+.syntax-timezone {
+  color: #888;
+}
+
+/* Right Quote */
+.syntax-quote-container {
+  align-self: flex-end;
+  max-width: 400px;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.syntax-quote {
+  font-family: monospace, 'Inter';
+  font-size: 0.75rem;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+/* Bottom Area */
+.syntax-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 2rem;
+}
+
+.syntax-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.syntax-stat-text {
+  color: #3b82f6;
+}
+
+.syntax-stat-highlight {
+  color: #3b82f6;
+}
+
+.syntax-arrow {
+  display: inline-block;
+  margin: 0 0.2rem;
+}
+
+.syntax-main-title {
+  position: relative;
+  text-align: center;
+  flex: 1;
+}
+
+.syntax-huge-text {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.syntax-role {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.syntax-scroll {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .syntax-content {
+    padding: 2rem;
+    padding-top: 80px;
+  }
+  
+  .syntax-top {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .syntax-top-right {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .syntax-quote-container {
+    align-self: flex-start;
+    margin-top: auto;
+    margin-bottom: 2rem;
+  }
+  
+  .syntax-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-bottom: 0;
+  }
+  
+  .syntax-main-title {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    transform: none;
+    text-align: left;
+    margin-top: 1rem;
+  }
+  
+  .syntax-huge-text {
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+  }
+  
+  .syntax-scroll {
+    align-self: flex-end;
+  }
+}
+
+
+.tech-dots {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.tech-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.floating-card span:last-child {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: revealUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-2 { animation-delay: 0.3s; }
+
+@keyframes revealUp {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Featured Projects Section */
+.projects-section {
+  padding: 6rem 0 8rem;
+}
+
+.project-arc-card {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+
+

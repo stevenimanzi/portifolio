@@ -1,0 +1,637 @@
+.skills-page {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: clip;
+  background-color: transparent;
+}
+
+.skills-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* Category Filters */
+.skills-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #aaa;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-btn.active {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+/* Grid Layout */
+.skills-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 2rem;
+  padding-bottom: 2rem; /* Room for scrollbar */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  /* Hide scrollbar for cleaner look (optional, but good for premium feel) */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.skills-grid::-webkit-scrollbar {
+  height: 8px;
+}
+.skills-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+.skills-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* Folder Tab Skill Cards */
+.skill-card-new {
+  position: relative;
+  border-radius: 20px;
+  height: 320px;
+  flex: 0 0 320px; /* Fixed width for horizontal scrolling */
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  background: #101015;
+}
+
+.skill-card-new:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.skill-card-bg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0;
+}
+
+.skill-card-grain {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0.4;
+  /* Simple CSS noise effect */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.skill-card-folder {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 75%;
+  background: #0d0d12;
+  /* The "Folder Tab" shape clip path! */
+  clip-path: polygon(0 0, 35% 0, 48% 18%, 100% 18%, 100% 100%, 0 100%);
+  z-index: 1;
+  padding: 1.5rem;
+  transition: background 0.4s ease;
+}
+
+.skill-card-new:hover .skill-card-folder {
+  background: #14141d;
+}
+
+.skill-tab-content {
+  position: absolute;
+  top: 12px;
+  left: 1.5rem;
+}
+
+.skill-icon-wrapper-new {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+
+.skill-icon-wrapper-new svg {
+  width: 100%;
+  height: 100%;
+}
+
+.skill-folder-arrow {
+  position: absolute;
+  top: 25%;
+  right: 1.5rem;
+  color: #666;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.skill-card-new:hover .skill-folder-arrow {
+  color: #fff;
+  transform: translate(3px, -3px);
+}
+
+.skill-body-content {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+}
+
+.skill-name-new {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.skill-desc-new {
+  font-size: 0.9rem;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* Education Journey Section */
+.education-section {
+  margin-top: 8rem;
+  position: relative;
+}
+
+.education-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.education-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+/* Contour Timeline */
+.contour-timeline-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 4rem auto 0;
+  height: 480px; /* Fixed height to fit the card */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Anchor content to the bottom */
+  padding-bottom: 2rem;
+}
+
+/* Floating Card */
+.contour-card-container {
+  position: absolute;
+  bottom: 120px; /* Sit right above the SVG line (SVG is 100px) */
+  width: 280px;
+  transform: translateX(-50%);
+  transition: left 0.8s cubic-bezier(0.34, 1.2, 0.64, 1); /* Spring bouncy animation */
+  z-index: 10;
+}
+
+.contour-card {
+  background: #111; /* Dark card background */
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  text-align: left;
+  overflow: hidden;
+}
+
+.contour-card-image {
+  height: 120px;
+  background: linear-gradient(135deg, #1e1e24, #0a0a0f);
+  position: relative;
+}
+
+.contour-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #fff;
+  color: #000;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.contour-card-body {
+  padding: 1.5rem;
+}
+
+.contour-subtitle {
+  font-size: 0.65rem;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.contour-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.contour-desc {
+  font-size: 0.75rem;
+  color: #888;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.contour-link {
+  font-size: 0.75rem;
+  color: #3b82f6;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.contour-link:hover {
+  color: #ff5555;
+}
+
+/* SVG Line */
+.contour-svg-container {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  margin-bottom: -20px; /* overlap with markers */
+}
+
+.contour-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.contour-path {
+  fill: none;
+  stroke: #3b82f6; /* Dark red/brown line */
+  stroke-width: 2;
+  transition: d 0.8s cubic-bezier(0.34, 1.2, 0.64, 1); /* Match spring duration */
+}
+
+.contour-dot {
+  fill: #050505;
+  stroke: #3b82f6;
+  stroke-width: 2;
+  transition: cx 0.8s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.contour-dot-inner {
+  fill: #3b82f6;
+  transition: cx 0.8s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+/* Year Markers */
+.contour-markers-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 5;
+}
+
+.contour-marker {
+  text-align: center;
+  cursor: pointer;
+  padding-top: 40px;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contour-marker:hover, .contour-marker.active {
+  opacity: 1;
+}
+
+.contour-year {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #888;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease;
+}
+
+.contour-marker.active .contour-year {
+  color: #3b82f6;
+  font-weight: 700;
+  transform: scale(1.1);
+}
+
+.contour-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  max-width: 100px;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contour-card-container {
+    width: 260px;
+    bottom: 100px;
+  }
+  
+  .contour-timeline-wrapper {
+    height: 420px;
+  }
+  
+  .contour-year {
+    font-size: 1.2rem;
+  }
+  
+  .contour-label {
+    font-size: 0.6rem;
+  }
+
+  .skills-page {
+    padding-top: 100px;
+  }
+  
+  .skills-header {
+    margin-bottom: 3rem;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* one card fits the row, with a sliver of the next one to invite a swipe */
+  .skill-card-new {
+    flex: 0 0 min(320px, 84%);
+  }
+  
+  .filter-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .edu-card {
+    padding: 1.5rem;
+  }
+}
+
+/* PDF Certificate Thumbnails */
+.project-expanded-image .react-pdf__Document {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.project-expanded-image .react-pdf__Page {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.project-expanded-image .react-pdf__Page canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 220px;
+  object-fit: cover;
+}
+
+/* Certificate Full-Screen Modal */
+.cert-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 90px;
+  animation: certFadeIn 0.3s ease;
+}
+
+@keyframes certFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cert-modal {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  width: 90vw;
+  max-width: 700px;
+  height: calc(100vh - 110px);
+  max-height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  animation: certSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes certSlideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.cert-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.cert-modal-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.cert-modal-type {
+  font-size: 0.75rem;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.cert-download-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cert-download-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+}
+
+.cert-close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cert-close-btn:hover {
+  background: rgba(255, 50, 50, 0.15);
+  border-color: rgba(255, 50, 50, 0.3);
+  color: #ff5555;
+}
+
+.cert-modal-body {
+  flex: 1;
+  overflow: hidden;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0f;
+}
+
+.cert-modal-body .react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cert-modal-body .react-pdf__Page {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cert-modal-body .react-pdf__Page canvas {
+  max-height: calc(100vh - 210px) !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100%;
+}
+
+/* Prev / Next Nav Buttons */
+.cert-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.cert-nav-btn:hover:not(.disabled) {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.cert-nav-btn.disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+.cert-nav-prev { left: 0.8rem; }
+.cert-nav-next { right: 0.8rem; }
+
+.cert-modal-body {
+  position: relative;
+}
+
+.cert-loading {
+  color: #888;
+  font-size: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .cert-modal {
+    width: 95vw;
+    max-height: 95vh;
+    border-radius: 14px;
+  }
+  .cert-modal-header {
+    padding: 1rem 1.2rem;
+  }
+  .cert-modal-title {
+    font-size: 1.1rem;
+  }
+  .cert-modal-body {
+    padding: 1rem;
+  }
+  .cert-download-btn span {
+    display: none;
+  }
+}

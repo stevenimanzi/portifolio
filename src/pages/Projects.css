@@ -1,0 +1,290 @@
+.projects-page {
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+/* The carousel goes edge to edge; the rest of the page keeps the normal body width */
+.projects-body {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.projects-body > :not(.mb-carousel) {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* ---------- MacBook carousel ---------- */
+.mb-carousel {
+  --lw: clamp(300px, 50vw, 1000px);   /* laptop lid width */
+  --bz: calc(var(--lw) * 0.02);       /* side + bottom bezel */
+  --bzt: calc(var(--lw) * 0.034);     /* thicker top bezel: holds the camera, never covers the picture */
+  --sw: calc(var(--lw) - var(--bz) * 2);  /* screen width */
+  --sh: calc(var(--sw) / 2.03);       /* screen height: matches the ~2:1 screenshots so nothing is cropped */
+  --top: clamp(12px, 2vw, 28px);
+  --lid-h: calc(var(--sh) + var(--bzt) + var(--bz));
+}
+
+.mb-stage {
+  position: relative;
+  width: 100%;
+  height: calc(var(--top) + var(--lid-h) + var(--lw) * 0.06);
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+/* Screenshots */
+.mb-slide {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--top) + var(--bzt));
+  width: var(--sw);
+  height: var(--sh);
+  margin-left: calc(var(--sw) / -2);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0a0a0b;
+  cursor: pointer;
+  transform: translateX(calc(var(--sw) * var(--tx))) scale(var(--s));
+  transition: transform 1.4s cubic-bezier(0.45, 0.05, 0.2, 1), opacity 1.4s ease;
+  animation: mb-appear 0.8s ease backwards;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Side previews are dimmed with a cheap fading overlay (animating a filter on big images stutters) */
+.mb-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: calc(1 - var(--dim));
+  transition: opacity 1.4s ease;
+  pointer-events: none;
+}
+
+.mb-slide.active {
+  cursor: default;
+}
+
+.mb-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  user-select: none;
+}
+
+@keyframes mb-appear {
+  from { opacity: 0; }
+}
+
+/* Laptop lid: bezel is a border, so the screen area stays fully see-through */
+.mb-lid {
+  position: absolute;
+  left: 50%;
+  top: var(--top);
+  z-index: 3;
+  box-sizing: border-box;
+  width: var(--lw);
+  height: var(--lid-h);
+  margin-left: calc(var(--lw) / -2);
+  border: solid #0a0a0b;
+  border-width: var(--bzt) var(--bz) var(--bz);
+  border-radius: calc(var(--lw) * 0.03) calc(var(--lw) * 0.03) 0 0;
+  box-shadow:
+    0 0 0 2px #4a4a4e,
+    0 -1px 0 2px #6a6a6f;
+  pointer-events: none;
+}
+
+/* Camera sits in the top bezel */
+.mb-lid::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: calc(var(--bzt) / -2 - 3px);
+  width: 6px;
+  height: 6px;
+  transform: translateX(-50%);
+  background: #1d2733;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #121216;
+}
+
+/* Laptop base */
+.mb-base {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--top) + var(--lid-h) + 2px);
+  z-index: 3;
+  width: calc(var(--lw) * 1.13);
+  height: calc(var(--lw) * 0.05);
+  margin-left: calc(var(--lw) * -0.565);
+  border-radius: 0 0 calc(var(--lw) * 0.05) calc(var(--lw) * 0.05) / 0 0 calc(var(--lw) * 0.045) calc(var(--lw) * 0.045);
+  background: linear-gradient(to bottom, #6b6b70 0%, #3a3a3e 35%, #232326 100%);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+}
+
+.mb-base::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 15%;
+  height: 32%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #151517, #2a2a2d);
+  border-radius: 0 0 calc(var(--lw) * 0.012) calc(var(--lw) * 0.012);
+}
+
+/* Arrows */
+.mb-arrow {
+  position: absolute;
+  top: calc(var(--top) + var(--bzt) + var(--sh) / 2 - 27px);
+  z-index: 5;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: rgba(20, 20, 22, 0.92);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.mb-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mb-arrow:hover {
+  background: #2a2a2e;
+  border-color: var(--accent-line);
+  transform: scale(1.06);
+}
+
+.mb-arrow:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.mb-arrow-prev { left: clamp(12px, 3vw, 56px); }
+.mb-arrow-next { right: clamp(12px, 3vw, 56px); }
+
+/* Caption + dots */
+.mb-caption {
+  margin-top: clamp(1.25rem, 2.5vw, 2.25rem);
+  padding: 0 1.5rem;
+  text-align: center;
+  animation: mb-caption-in 0.6s ease both;
+}
+
+.mb-caption h2 {
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.mb-caption p {
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+@keyframes mb-caption-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.mb-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.15rem;
+  width: fit-content;
+  margin: 1.75rem auto 0;
+  padding: 0.95rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mb-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: width 0.45s var(--ease-out), background 0.3s ease;
+}
+
+.mb-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.mb-dot.active {
+  width: 30px;
+  background: #fff;
+}
+
+.mb-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.mb-visit {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.mb-private {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .mb-carousel {
+    --lw: 84vw;
+  }
+  .mb-arrow {
+    width: 40px;
+    height: 40px;
+    top: calc(var(--top) + var(--bzt) + var(--sh) / 2 - 20px);
+  }
+  .mb-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+  .mb-dots {
+    gap: 0.9rem;
+    padding: 0.8rem 1.25rem;
+  }
+  .projects-body > :not(.mb-carousel) {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-slide,
+  .mb-caption {
+    animation: none;
+    transition: none;
+  }
+}

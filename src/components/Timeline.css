@@ -1,0 +1,321 @@
+/* Timeline Journey Section: original design, tuned for speed.
+   Only transform / opacity are animated (no blur, no `transition: all` on big shapes),
+   so scrolling stays smooth. The tall section pins the stage while you scroll. */
+.timeline-section {
+  position: relative;
+  color: #ffffff;
+  /* one screen of pinning plus a short slice of scrolling per year */
+  height: calc(100vh + var(--n) * 60vh);
+}
+
+.timeline-arc-container {
+  position: relative;
+  width: 25%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.timeline-svg-h { display: none; }
+
+.timeline-dot {
+  position: absolute;
+  top: var(--dt);
+  left: var(--dl);
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s var(--ease-out), background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  z-index: 2;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.timeline-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.timeline-dot:hover:not(.active) {
+  border-color: var(--accent-line);
+}
+
+.timeline-dot.active {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+}
+
+.dot-text {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.timeline-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+
+.timeline-content-container {
+  width: 40%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-content-slide {
+  position: absolute;
+  width: 100%;
+  padding: 0 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.3s ease, transform 0.45s var(--ease-out), visibility 0s linear 0.45s;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+/* years already scrolled past leave upward, the next ones enter from below */
+.timeline-content-slide.past-slide {
+  transform: translate3d(0, -28px, 0);
+}
+
+.timeline-content-slide.active-slide {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.4s ease 0.08s, transform 0.5s var(--ease-out) 0.08s, visibility 0s;
+  pointer-events: auto;
+}
+
+.phase-title {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 3.5rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.phase-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  padding-left: 1.2rem;
+}
+
+.phase-desc li {
+  margin-bottom: 0.6rem;
+}
+
+.phase-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.phase-tag {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #ddd;
+}
+
+.timeline-visual-container {
+  position: relative;
+  width: 35%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-box {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(30, 30, 38, 0.8), rgba(20, 20, 28, 0.8));
+  box-shadow: 0 10px 40px rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-radius 0.55s ease;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  isolation: isolate;
+  will-change: transform;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+.timeline-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  transition: opacity 0.45s ease, transform 0.6s ease;
+  opacity: 0;
+  display: block;
+}
+
+.timeline-image.active {
+  opacity: 0.8;
+}
+
+.visual-box:hover .timeline-image.active {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.visual-index-0 {
+  transform: scale(1);
+}
+.visual-index-1 {
+  transform: scale(1.1) rotate(15deg);
+  border-radius: 30px;
+}
+.visual-index-2 {
+  transform: scale(0.9) rotate(-15deg);
+  border-radius: 50px 10px;
+}
+.visual-index-3 {
+  transform: scale(1.05) rotate(5deg);
+  border-radius: 20px 60px;
+}
+.visual-index-4 {
+  transform: scale(0.95) rotate(-5deg);
+  border-radius: 40px 20px;
+}
+
+/* ---------- Phones and tablets: same design, same pinning, re-arranged ---------- */
+@media (max-width: 900px) {
+  .timeline-section {
+    height: calc(100vh + var(--n) * 55vh);
+  }
+
+  @supports (height: 100svh) {
+    .timeline-section { height: calc(100svh + var(--n) * 55svh); }
+    .timeline-sticky-wrapper { height: 100svh; }
+  }
+
+  .timeline-sticky-wrapper {
+    flex-direction: column;
+    padding-top: 5.5rem; /* clears the floating navigation */
+  }
+
+  /* arc runs across the top */
+  .timeline-arc-container {
+    order: 1;
+    flex: none;
+    width: 100%;
+    height: 112px;
+  }
+  .timeline-svg-v { display: none; }
+  .timeline-svg-h { display: block; }
+
+  .timeline-dot {
+    top: var(--mt);
+    left: var(--ml);
+    width: 54px;
+    height: 54px;
+  }
+  .dot-text { font-size: 0.85rem; letter-spacing: 0.03em; }
+
+  /* small portrait under the arc */
+  .timeline-visual-container {
+    order: 2;
+    flex: none;
+    width: 100%;
+    height: auto;
+    padding: 0.35rem 0 0.6rem;
+  }
+  .visual-box {
+    width: clamp(78px, 13vh, 104px);
+    height: clamp(78px, 13vh, 104px);
+  }
+
+  /* the story fills the rest */
+  .timeline-content-container {
+    order: 3;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    align-items: flex-start;
+  }
+  .timeline-content-slide {
+    top: 0;
+    padding: 0 1.25rem;
+  }
+  .phase-title {
+    font-size: clamp(1.7rem, 7.4vw, 2.4rem);
+    margin-bottom: clamp(0.6rem, 1.6vh, 1rem);
+  }
+  .phase-desc {
+    font-size: clamp(0.8rem, 2.05vh, 0.98rem);
+    line-height: 1.5;
+    margin-bottom: clamp(0.7rem, 1.8vh, 1.2rem);
+    padding-left: 1.1rem;
+  }
+  .phase-desc li { margin-bottom: 0.35rem; }
+  .phase-tag { padding: 0.3rem 0.8rem; font-size: 0.75rem; }
+}
+
+/* Very short screens (phone on its side): no room to pin, so show a plain list */
+@media (max-width: 900px) and (max-height: 540px) {
+  .timeline-section { height: auto; }
+  .timeline-sticky-wrapper {
+    position: relative;
+    height: auto;
+    overflow: visible;
+    padding: 3rem 0;
+  }
+  .timeline-arc-container,
+  .timeline-visual-container { display: none; }
+  .timeline-content-container { display: block; }
+  .timeline-content-slide {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    margin-bottom: 3rem;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-content-slide,
+  .timeline-dot,
+  .visual-box,
+  .timeline-image { transition: none; }
+}
