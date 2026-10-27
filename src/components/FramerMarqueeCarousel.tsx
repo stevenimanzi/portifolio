@@ -180,7 +180,7 @@ export default function FramerMarqueeCarousel({
       aria-label="Carousel section"
     >
       <div className="framer-tc-outer">
-        {/* 1. Header & Controls */}
+        {/* 1. Header (Centered, Single Line Title) */}
         <div className="framer-tc-header">
           <div className="framer-tc-intro-content">
             {eyebrow && (
@@ -193,28 +193,9 @@ export default function FramerMarqueeCarousel({
             <h2 className="framer-tc-title">{title}</h2>
             <p className="framer-tc-subtitle">{subtitle}</p>
           </div>
-
-          <div className="framer-tc-controls">
-            <button
-              type="button"
-              className="framer-tc-nav-btn"
-              onClick={() => navigateBy(24)}
-              aria-label="Scroll carousel left"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              className="framer-tc-nav-btn"
-              onClick={() => navigateBy(-24)}
-              aria-label="Scroll carousel right"
-            >
-              →
-            </button>
-          </div>
         </div>
 
-        {/* 2. Marquee Stage with Fade Masks */}
+        {/* 2. Marquee Stage */}
         <div
           ref={stageRef}
           className="framer-tc-stage"
@@ -228,10 +209,7 @@ export default function FramerMarqueeCarousel({
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
         >
-          <div className="framer-tc-fade-left" aria-hidden="true" />
-          <div className="framer-tc-fade-right" aria-hidden="true" />
-
-          {/* 3. Infinite Translation Track */}
+          {/* Infinite Translation Track */}
           <div ref={trackRef} className="framer-tc-track">
             {duplicated.map((item, idx) => {
               const initial = item.title.charAt(0).toUpperCase();
@@ -244,90 +222,111 @@ export default function FramerMarqueeCarousel({
                   className="framer-tc-card"
                   aria-label={item.title}
                 >
-                  <div>
-                    {/* Card Top: Category Tag (Stars & Screen Count Removed) */}
-                    <div className="framer-card-top-row">
-                      <span className="framer-card-pill">{item.tag}</span>
-                    </div>
+                  {/* Card Background Image & Dark Gradient Scrim */}
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="framer-card-bg-img"
+                    loading="lazy"
+                  />
+                  <div className="framer-card-bg-scrim" />
 
-                    {/* Card Image Box */}
-                    <div className="framer-card-media">
-                      <img src={item.image} alt={item.title} loading="lazy" />
-                      <div className="framer-card-media-overlay" />
+                  {/* External Live Link Icon (Top Right) */}
+                  {hasExternalLink && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="framer-card-action-btn"
+                      aria-label={`Visit live website for ${item.title}`}
+                      title="Open live link"
+                      onClick={e => isDragging && e.preventDefault()}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                    </a>
+                  )}
 
-                      {hasExternalLink && (
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="framer-card-action-btn"
-                          aria-label={`Visit live website for ${item.title}`}
-                          title="Open live link"
-                          onClick={e => isDragging && e.preventDefault()}
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                          </svg>
-                        </a>
-                      )}
-                    </div>
-
-                    {/* Card Content */}
+                  {/* Card Content Layer */}
+                  <div className="framer-card-content">
                     <div className="framer-card-body">
                       <h3 className="framer-card-title">{item.title}</h3>
                       <p className="framer-card-text">{item.description}</p>
                     </div>
-                  </div>
 
-                  {/* Card Footer: Author info & CTA */}
-                  <div className="framer-card-footer">
-                    <div className="framer-author-group">
-                      <div className="framer-author-avatar" aria-hidden="true">
-                        {initial}
+                    {/* Card Footer: Entity info & CTA */}
+                    <div className="framer-card-footer">
+                      <div className="framer-author-group">
+                        <div className="framer-author-avatar" aria-hidden="true">
+                          {initial}
+                        </div>
+                        <div className="framer-author-meta">
+                          <span className="framer-author-name">{item.title}</span>
+                          <span className="framer-author-role">{item.tag}</span>
+                        </div>
                       </div>
-                      <div className="framer-author-meta">
-                        <span className="framer-author-name">{item.title}</span>
-                        <span className="framer-author-role">{item.tag}</span>
-                      </div>
+
+                      {targetRoute && (
+                        targetRoute.startsWith('/') ? (
+                          <Link
+                            to={targetRoute}
+                            className="framer-card-cta-btn"
+                            onClick={e => isDragging && e.preventDefault()}
+                          >
+                            <span>{item.ctaText || 'Explore'}</span>
+                            <span aria-hidden="true">→</span>
+                          </Link>
+                        ) : (
+                          <a
+                            href={targetRoute}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="framer-card-cta-btn"
+                            onClick={e => isDragging && e.preventDefault()}
+                          >
+                            <span>{item.ctaText || 'View Live'}</span>
+                            <span aria-hidden="true">→</span>
+                          </a>
+                        )
+                      )}
                     </div>
-
-                    {targetRoute && (
-                      targetRoute.startsWith('/') ? (
-                        <Link
-                          to={targetRoute}
-                          className="framer-card-cta-btn"
-                          onClick={e => isDragging && e.preventDefault()}
-                        >
-                          <span>{item.ctaText || 'Explore'}</span>
-                          <span aria-hidden="true">→</span>
-                        </Link>
-                      ) : (
-                        <a
-                          href={targetRoute}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="framer-card-cta-btn"
-                          onClick={e => isDragging && e.preventDefault()}
-                        >
-                          <span>{item.ctaText || 'View Live'}</span>
-                          <span aria-hidden="true">→</span>
-                        </a>
-                      )
-                    )}
                   </div>
                 </article>
               );
             })}
           </div>
+        </div>
+
+        {/* 3. Next / Prev Icons at the Bottom (Centered and Visible) */}
+        <div className="framer-tc-bottom-controls">
+          <button
+            type="button"
+            className="framer-tc-nav-btn"
+            onClick={() => navigateBy(24)}
+            aria-label="Scroll carousel left"
+            title="Previous"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            className="framer-tc-nav-btn"
+            onClick={() => navigateBy(-24)}
+            aria-label="Scroll carousel right"
+            title="Next"
+          >
+            →
+          </button>
         </div>
       </div>
     </section>

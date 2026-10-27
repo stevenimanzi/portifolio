@@ -1,7 +1,7 @@
 /* ==============================================================================
-   Framer TestimonialCarousel Design System (100% Video Replica)
-   Reference: Recording 2026-10-27 181029.mp4
-   Theme: Real Dark (#111115 / #0d0d11) - NO blue tint, NO orange, NO screen count
+   Framer TestimonialCarousel Design System
+   Reference: Centered Layout, Full-Bleed Card Background Images, Bottom Visible Nav
+   Theme: Real Dark Glassmorphism, Zero Solid Colors, Seamless Fixed Background
    ============================================================================== */
 
 .framer-tc-section {
@@ -18,23 +18,50 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.25rem;
 }
 
-/* 1. Header & Intro (Title + Subtitle + Controls, NO orange eyebrow) */
+/* 1. Header (Centered, Single-Line Title without Break or Text Wrap) */
 .framer-tc-header {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 1.5rem;
   width: 100%;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .framer-tc-intro-content {
-  max-width: 720px;
+  max-width: 840px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.framer-tc-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'Inter', monospace);
+  font-size: clamp(0.72rem, 1.8vw, 0.82rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #3b82f6;
+  margin-bottom: 0.85rem;
+}
+
+.framer-tc-eyebrow .eyebrow-pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: #3b82f6;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
 }
 
 .framer-tc-title {
@@ -45,6 +72,8 @@
   letter-spacing: -0.03em;
   color: #ffffff;
   margin: 0 0 0.85rem 0;
+  text-align: center;
+  white-space: nowrap; /* Single line, no break or text wrap */
 }
 
 .framer-tc-title strong {
@@ -53,49 +82,13 @@
 }
 
 .framer-tc-subtitle {
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.6;
-  color: #8e8e93;
+  color: #a1a1aa;
   font-weight: 400;
-  margin: 0;
-}
-
-/* Header Controls (Prev/Next buttons) */
-.framer-tc-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
-}
-
-.framer-tc-nav-btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  font-size: 1.15rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  user-select: none;
-}
-
-.framer-tc-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-.framer-tc-nav-btn:active {
-  transform: scale(0.96);
+  margin: 0 auto;
+  text-align: center;
+  max-width: 680px;
 }
 
 /* 2. Marquee Stage with transparent CSS edge-fading (NO solid color blocks) */
@@ -116,7 +109,6 @@
   cursor: grabbing;
 }
 
-/* Hide legacy solid color overlays so fixed site background shows cleanly through */
 .framer-tc-fade-left,
 .framer-tc-fade-right {
   display: none !important;
@@ -131,110 +123,83 @@
   align-items: stretch;
 }
 
-/* 3. The REAL DARK Luxury Card (100% Match with Video) */
+/* 3. Luxury Card with Full-Bleed Image as Background (To Look Good) */
 .framer-tc-card {
   width: 360px;
   min-width: 360px;
-  min-height: 460px;
-  padding: 30px;
+  height: 480px;
+  min-height: 480px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-  border-radius: 22px;
-  
-  /* REAL DARK BACKGROUND - NO BLUE TINT - High-End Glassmorphism */
-  background: rgba(17, 17, 21, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  color: #f3f4f6;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.04) inset;
-  
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.25s ease,
-              border-color 0.25s ease;
+  justify-content: flex-end;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease;
+  user-select: none;
+  background-color: #0d0d12;
 }
 
 .framer-tc-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(255, 255, 255, 0.08) inset;
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(59, 130, 246, 0.18);
 }
 
-/* Card Top: Clean Category Tag (Stars & screen count removed) */
-.framer-card-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 1.25rem;
-}
-
-.framer-card-pill {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #d1d5db;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 0.25rem 0.65rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Card Visual Image Frame */
-.framer-card-media {
-  position: relative;
-  width: 100%;
-  height: 180px;
-  border-radius: 14px;
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #09090b;
-}
-
-.framer-card-media img {
+/* Full-bleed background image fitted inside card */
+.framer-card-bg-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  object-position: center;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
 }
 
-.framer-tc-card:hover .framer-card-media img {
-  transform: scale(1.05);
+.framer-tc-card:hover .framer-card-bg-img {
+  transform: scale(1.08);
 }
 
-.framer-card-media-overlay {
+/* Dark gradient scrim layered over image for optimal text readability */
+.framer-card-bg-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 15, 0.1) 0%,
+    rgba(10, 10, 15, 0.35) 30%,
+    rgba(10, 10, 15, 0.82) 65%,
+    rgba(10, 10, 15, 0.98) 100%
+  );
   pointer-events: none;
 }
 
-/* Card Action Icon (36px circular glass button matching video play icon) */
+/* Card External Live Link Button (Top Right) */
 .framer-card-action-btn {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  width: 36px;
-  height: 36px;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  z-index: 2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.2s ease;
+  z-index: 4;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
   text-decoration: none;
 }
 
@@ -242,50 +207,61 @@
   background-color: #ffffff;
   color: #000000;
   transform: scale(1.1);
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .framer-card-action-btn svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
-/* Card Body Content */
+/* Card Content Container (Bottom Layered) */
+.framer-card-content {
+  position: relative;
+  z-index: 3;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: transparent;
+}
+
 .framer-card-body {
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .framer-card-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   color: #ffffff;
   margin: 0 0 0.5rem 0;
   line-height: 1.3;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
 }
 
 .framer-card-text {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #d1d5db;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-bottom: 1.25rem;
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
 }
 
-/* Card Footer: Entity Row matching video */
+/* Card Footer: Entity Row */
 .framer-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 0.25rem;
 }
 
 .framer-author-group {
@@ -297,11 +273,11 @@
 }
 
 .framer-author-avatar {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -310,6 +286,8 @@
   font-weight: 700;
   color: #ffffff;
   flex-shrink: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .framer-author-meta {
@@ -327,11 +305,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .framer-author-role {
-  font-size: 0.75rem;
-  color: #8e8e93;
+  font-size: 0.72rem;
+  color: #9ca3af;
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
@@ -339,16 +318,22 @@
 }
 
 .framer-card-cta-btn {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: transform 0.2s ease, color 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
 }
 
 .framer-card-cta-btn span {
@@ -356,23 +341,58 @@
 }
 
 .framer-card-cta-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
   transform: translateX(3px);
-  color: #93c5fd;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. Bottom Controls: Next/Prev icons positioned below the cards & clearly visible */
+.framer-tc-bottom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  z-index: 10;
+  position: relative;
+}
+
+.framer-tc-nav-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.05);
+  user-select: none;
+}
+
+.framer-tc-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.65);
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7), 0 0 20px rgba(59, 130, 246, 0.25);
+}
+
+.framer-tc-nav-btn:active {
+  transform: scale(0.94);
 }
 
 /* ==============================================================================
    Mobile Responsiveness (Clean, zero horizontal clipping, smooth swipe)
    ============================================================================== */
-@media (max-width: 1024px) {
-  .framer-tc-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .framer-tc-controls {
-    align-self: flex-start;
-  }
-}
-
 @media (max-width: 768px) {
   .framer-tc-section {
     padding: 3.5rem 0;
@@ -381,23 +401,29 @@
     padding: 0 1.25rem;
   }
   .framer-tc-title {
-    font-size: 2rem;
+    font-size: clamp(1.65rem, 5.5vw, 2.2rem);
+    white-space: normal;
   }
   .framer-tc-subtitle {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
   }
   .framer-tc-stage {
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
   }
   .framer-tc-card {
     width: calc(100vw - 2.5rem);
     min-width: calc(100vw - 2.5rem);
     max-width: 340px;
-    padding: 24px;
-    min-height: 420px;
+    height: 450px;
+    min-height: 450px;
   }
-  .framer-card-media {
-    height: 160px;
+  .framer-card-content {
+    padding: 20px;
+  }
+  .framer-tc-nav-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
   }
 }
