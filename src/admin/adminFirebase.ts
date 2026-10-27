@@ -11,7 +11,7 @@ import {
   writeBatch,
   type DocumentData
 } from 'firebase/firestore';
-import { app, ADMIN_EMAIL } from '../lib/firebase';
+import { app, ADMIN_EMAIL, ADMIN_EMAILS } from '../lib/firebase';
 import type { RawContent, RawDoc } from '../content/model';
 import type { buildAll } from '../content/contentUtils';
 
@@ -28,7 +28,7 @@ export function getAdminToken(): string | null {
 }
 
 export function isAdminUser(user: User | null): user is User {
-  return !!user && (user.email === ADMIN_EMAIL || user.uid === 'mysql-admin');
+  return !!user && (ADMIN_EMAILS.includes(user.email ?? '') || user.uid === 'mysql-admin');
 }
 
 // Development-only shortcut for checking the dashboard layout without signing in.

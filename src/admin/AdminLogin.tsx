@@ -1,36 +1,53 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
   type User
 } from 'firebase/auth';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import {
+  EyeIcon,
+  EyeSlashIcon,
+  LockClosedIcon,
+  EnvelopeIcon,
+  ShieldCheckIcon,
+  ArrowLeftIcon,
+  CheckIcon,
+  ExclamationCircleIcon,
+  InformationCircleIcon,
+  ArrowPathIcon
+} from '@heroicons/react/24/outline';
 import { auth, isAdminUser, useAuthUser } from './adminFirebase';
 import { markAsOwner } from '../lib/publicApi';
 import './admin.css';
 
 const errorMessages: Record<string, string> = {
-  'auth/invalid-credential': 'Wrong email or password, or this account has not been created yet in Firebase Authentication.',
+  'auth/invalid-credential': 'Invalid email or password. Please check your credentials and try again.',
   'auth/invalid-email': 'That email address is not valid.',
-  'auth/user-disabled': 'This account has been disabled.',
-  'auth/user-not-found': 'No account uses that email address.',
-  'auth/too-many-requests': 'Too many attempts. Wait a few minutes and try again.',
-  'auth/network-request-failed': 'Network problem. Check your connection and try again.',
-  'auth/popup-blocked': 'Your browser blocked the Google sign-in window. Allow pop-ups and try again.',
-  'auth/operation-not-allowed': 'This sign-in method is not switched on yet in Firebase Authentication.',
-  'auth/configuration-not-found': 'Authentication is not set up yet. In the Firebase console open Authentication and click Get started.',
-  'auth/unauthorized-domain': 'This website address is not authorised in Firebase Authentication.'
+  'auth/user-disabled': 'This administrator account has been disabled.',
+  'auth/user-not-found': 'No registered account found with that email address.',
+  'auth/too-many-requests': 'Too many attempts. Please wait a few minutes and try again.',
+  'auth/network-request-failed': 'Network problem. Check your internet connection and try again.'
 };
 
 const features = [
-  'Visitors, locations and page views',
-  'Messages from your contact form',
-  'Edit projects, services and content',
-  'SEO settings that Google can read'
+  {
+    title: 'Traffic & Geo Analytics',
+    desc: 'Real-time visitor counts, geographic locations and page views'
+  },
+  {
+    title: 'Client Inquiries',
+    desc: 'Instant contact form submissions and lead management'
+  },
+  {
+    title: 'Content & Portfolio Control',
+    desc: 'Seamlessly update projects, live demo links and services'
+  },
+  {
+    title: 'SEO & Metadata Suite',
+    desc: 'Search engine preview, meta descriptions and indexing controls'
+  }
 ];
 
 export default function AdminLogin() {
@@ -44,28 +61,24 @@ export default function AdminLogin() {
   const [info, setInfo] = useState('');
 
   useEffect(() => {
-    document.title = 'Admin sign in | Steven Imanzi';
+    document.title = 'Admin Gateway | Steven Imanzi';
   }, []);
 
-  // Already signed in as the owner: go straight to the dashboard.
+  // Already authenticated: go straight to admin dashboard
   useEffect(() => {
-    if (ready && isAdminUser(user)) navigate('/admin', { replace: true });
+    if (ready && isAdminUser(user)) {
+      navigate('/admin', { replace: true });
+    }
   }, [ready, user, navigate]);
 
   const finish = async (signedIn: User) => {
     if (!isAdminUser(signedIn)) {
       await signOut(auth);
-      setError('This account is not allowed to open the admin area.');
+      setError('Access denied. This account does not have administrative privileges.');
       return;
     }
     markAsOwner();
     navigate('/admin', { replace: true });
-  };
-
-  const fail = (err: unknown) => {
-    const code = (err as { code?: string })?.code ?? '';
-    if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
-    setError(errorMessages[code] ?? 'Could not sign in. Please try again.');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -75,14 +88,24 @@ export default function AdminLogin() {
     setInfo('');
 
     const trimmedEmail = email.trim();
+    if (!trimmedEmail || !password) {
+      setError('Please provide both your email address and password.');
+      setBusy(false);
+      return;
+    }
 
-    // 1. First attempt MySQL backend authentication
+    let mysqlAttempted = false;
+    let mysqlRejected = false;
+
+    // 1. Primary Authentication: MySQL Database API (/api/auth.php)
     try {
       const res = await fetch('/api/auth.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: trimmedEmail, password })
       });
+      mysqlAttempted = true;
+
       if (res.ok) {
         const data = await res.json();
         if (data.token) {
@@ -92,31 +115,28 @@ export default function AdminLogin() {
           navigate('/admin', { replace: true });
           return;
         }
+      } else if (res.status === 401) {
+        mysqlRejected = true;
       }
     } catch {
-      // Backend API offline or fetch failed: fall through to Firebase
+      // Backend offline or local dev without PHP proxy; continue to Firebase
     }
 
-    // 2. Fall back to Firebase Authentication
+    // 2. Secondary / Fallback Authentication: Firebase
     try {
       const result = await signInWithEmailAndPassword(auth, trimmedEmail, password);
       await finish(result.user);
     } catch (err) {
-      fail(err);
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleGoogle = async () => {
-    setBusy(true);
-    setError('');
-    setInfo('');
-    try {
-      const result = await signInWithPopup(auth, new GoogleAuthProvider());
-      await finish(result.user);
-    } catch (err) {
-      fail(err);
+      const code = (err as { code?: string })?.code ?? '';
+      if (mysqlRejected || code === 'auth/invalid-credential' || code === 'auth/user-not-found') {
+        setError('Invalid email or password. Please verify your credentials.');
+      } else if (errorMessages[code]) {
+        setError(errorMessages[code]);
+      } else if (mysqlAttempted) {
+        setError('Authentication failed. Please verify your credentials.');
+      } else {
+        setError('Could not sign in. Please verify your connection and try again.');
+      }
     } finally {
       setBusy(false);
     }
@@ -125,16 +145,18 @@ export default function AdminLogin() {
   const handleReset = async () => {
     setError('');
     setInfo('');
-    if (!email.trim()) {
-      setError('Type your email address above first, then click “Forgot password?”.');
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError('Please type your administrator email above first, then click “Forgot password?”.');
       return;
     }
     setBusy(true);
     try {
-      await sendPasswordResetEmail(auth, email.trim());
-      setInfo('If that address has an account, a password reset link is on its way. Check your inbox and spam folder.');
+      await sendPasswordResetEmail(auth, trimmedEmail);
+      setInfo('Password reset instructions have been dispatched if this address is registered.');
     } catch (err) {
-      fail(err);
+      const code = (err as { code?: string })?.code ?? '';
+      setError(errorMessages[code] ?? 'Could not request password reset. Please try again.');
     } finally {
       setBusy(false);
     }
@@ -142,123 +164,159 @@ export default function AdminLogin() {
 
   return (
     <div className="adm-login">
+      {/* Brand & system summary sidebar */}
       <aside className="adm-login-side">
         <div className="adm-brand">
           <span className="adm-logo" aria-hidden="true">SI</span>
           <div>
             <strong>Steven Imanzi</strong>
-            <small>Website admin</small>
+            <small>Executive Control Panel</small>
           </div>
         </div>
-        <div>
-          <h2>Everything about your website, in one place.</h2>
-          <ul className="adm-login-features">
-            {features.map(text => (
-              <li key={text}>{text}</li>
+
+        <div className="adm-login-hero">
+          <div className="adm-pill">
+            <span className="adm-dot-pulse" aria-hidden="true" />
+            <span>Portal v2.4 Active</span>
+          </div>
+          <h2>Everything about your digital portfolio, in one unified place.</h2>
+          <ul className="adm-features-list">
+            {features.map(f => (
+              <li key={f.title}>
+                <span className="adm-feat-icon" aria-hidden="true">
+                  <CheckIcon />
+                </span>
+                <div>
+                  <strong>{f.title}</strong>
+                  <p>{f.desc}</p>
+                </div>
+              </li>
             ))}
           </ul>
         </div>
-        <small className="adm-muted">© {new Date().getFullYear()} Steven Imanzi</small>
+
+        <div className="adm-side-foot">
+          <small className="adm-muted">© {new Date().getFullYear()} Steven Imanzi. Secure Infrastructure.</small>
+        </div>
       </aside>
 
+      {/* Main authentication card container */}
       <main className="adm-login-main">
-        <form className="adm-login-card" onSubmit={handleSubmit} noValidate>
-          <h1>Sign in</h1>
-          <p className="adm-login-sub">Welcome back. Enter your details to open the dashboard.</p>
+        <div className="adm-login-shell">
+          <div className="adm-card-glow" aria-hidden="true" />
 
-          {error && (
-            <div className="adm-login-error" role="alert">
-              {error}
+          <form className="adm-auth-card" onSubmit={handleSubmit} noValidate>
+            <div className="adm-auth-header">
+              <div className="adm-auth-icon-wrap" aria-hidden="true">
+                <ShieldCheckIcon />
+              </div>
+              <h1>Admin Gateway</h1>
+              <p className="adm-auth-sub">
+                Sign in to manage portfolio content, inspect live visitor telemetry, and review inquiries.
+              </p>
             </div>
-          )}
 
-          {info && (
-            <div className="adm-login-info" role="status">
-              {info}
+            {error && (
+              <div className="adm-alert adm-alert-bad" role="alert">
+                <ExclamationCircleIcon className="adm-alert-svg" aria-hidden="true" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            {info && (
+              <div className="adm-alert adm-alert-info" role="status">
+                <InformationCircleIcon className="adm-alert-svg" aria-hidden="true" />
+                <span>{info}</span>
+              </div>
+            )}
+
+            <div className="adm-auth-fields">
+              {/* Email Input */}
+              <div className="adm-group">
+                <label htmlFor="adm-email-input" className="adm-label">
+                  Email Address
+                </label>
+                <div className="adm-input-wrap">
+                  <EnvelopeIcon className="adm-input-icon" aria-hidden="true" />
+                  <input
+                    id="adm-email-input"
+                    type="email"
+                    autoComplete="username"
+                    required
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="info@stevenimanzi.info"
+                    disabled={busy}
+                    className="adm-auth-input"
+                  />
+                </div>
+              </div>
+
+              {/* Password Input */}
+              <div className="adm-group">
+                <div className="adm-label-row">
+                  <label htmlFor="adm-password-input" className="adm-label">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    className="adm-forgot-link"
+                    onClick={handleReset}
+                    disabled={busy}
+                    tabIndex={-1}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <div className="adm-input-wrap">
+                  <LockClosedIcon className="adm-input-icon" aria-hidden="true" />
+                  <input
+                    id="adm-password-input"
+                    type={show ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    disabled={busy}
+                    className="adm-auth-input with-toggle"
+                  />
+                  <button
+                    type="button"
+                    className="adm-toggle-visibility"
+                    onClick={() => setShow(s => !s)}
+                    aria-label={show ? 'Hide password' : 'Show password'}
+                    tabIndex={-1}
+                  >
+                    {show ? <EyeSlashIcon aria-hidden="true" /> : <EyeIcon aria-hidden="true" />}
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
 
-          <label className="adm-field">
-            <span>Email address</span>
-            <input
-              type="email"
-              autoComplete="username"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="you@example.com"
+            <button
+              type="submit"
+              className="adm-btn-submit"
               disabled={busy}
-            />
-          </label>
+            >
+              {busy ? (
+                <>
+                  <ArrowPathIcon className="adm-spinner" aria-hidden="true" />
+                  <span>Authenticating…</span>
+                </>
+              ) : (
+                <span>Sign in to Dashboard</span>
+              )}
+            </button>
 
-          <label className="adm-field">
-            <span className="adm-field-row">
-              <span>Password</span>
-              <button type="button" className="adm-text-link" onClick={handleReset} tabIndex={-1}>
-                Forgot password?
-              </button>
-            </span>
-            <span className="adm-pass-wrap">
-              <input
-                type={show ? 'text' : 'password'}
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
-                disabled={busy}
-              />
-              <button
-                type="button"
-                className="adm-icon-btn adm-pass-toggle"
-                onClick={() => setShow(s => !s)}
-                aria-label={show ? 'Hide password' : 'Show password'}
-                tabIndex={-1}
-              >
-                {show ? <EyeSlashIcon aria-hidden="true" /> : <EyeIcon aria-hidden="true" />}
-              </button>
-            </span>
-          </label>
-
-          <button type="submit" className="adm-btn adm-btn-primary adm-btn-block" disabled={busy}>
-            {busy ? 'Signing in…' : 'Sign in'}
-          </button>
-
-          <div className="adm-login-sep" aria-hidden="true">
-            <span>or</span>
-          </div>
-
-          <button
-            type="button"
-            className="adm-btn adm-btn-secondary adm-btn-block"
-            onClick={handleGoogle}
-            disabled={busy}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true" className="adm-google-icon">
-              <path
-                fill="#EA4335"
-                d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.4l3.7 2.9C6.5 7.4 9 5 12 5z"
-              />
-              <path
-                fill="#4285F4"
-                d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.6 14.7c-.2-.7-.4-1.5-.4-2.7s.1-2 .4-2.7L1.9 6.4C.7 8.8 0 10.3 0 12s.7 3.2 1.9 5.6l3.7-2.9z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.3L1.9 16C3.7 19.8 7.5 23 12 23z"
-              />
-            </svg>
-            Sign in with Google
-          </button>
-
-          <p className="adm-login-foot">
-            <Link to="/">Back to the website</Link>
-          </p>
-        </form>
+            <div className="adm-auth-foot">
+              <Link to="/" className="adm-back-link">
+                <ArrowLeftIcon className="adm-back-icon" aria-hidden="true" />
+                <span>Back to portfolio</span>
+              </Link>
+            </div>
+          </form>
+        </div>
       </main>
     </div>
   );

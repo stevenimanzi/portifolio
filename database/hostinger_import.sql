@@ -30,7 +30,7 @@ CREATE TABLE `admins` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `admins` (
 
 LOCK TABLES `admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT INTO `admins` VALUES (1,'stivenimanzi1@gmail.com','$2y$12$whWE7V8Xa0WsACcKPwh2qeh8pCGt121PYeTu4Qd6DmgRFKyCf4BdK','Steven IMANZI','2026-10-27 13:22:17');
+INSERT INTO `admins` VALUES (1,'stivenimanzi1@gmail.com','$2y$12$RHUbWYMNHABK.Vh8KeNca.Acz3UNtJ3112ysP1Aizbh56WN7sDge2','Steven IMANZI','2026-10-27 13:22:17'),(5,'info@stevenimanzi.info','$2y$12$PLZW2DZoV3b/aB2MGIr48uelr2B4/6B1A9.wnRnE5ootuLAVadstm','Steven IMANZI','2026-10-27 14:29:36');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-27 15:54:00
+-- Dump completed on 2026-10-27 16:36:55

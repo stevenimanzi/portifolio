@@ -11,7 +11,8 @@ export const firebaseConfig = {
   measurementId: 'G-LZVVD07YCY'
 };
 
-// The only account allowed into /admin. Must match the address in firestore.rules.
-export const ADMIN_EMAIL = 'stivenimanzi1@gmail.com';
+// Authorized admin accounts allowed into /admin.
+export const ADMIN_EMAIL = 'info@stevenimanzi.info';
+export const ADMIN_EMAILS = ['info@stevenimanzi.info', 'stivenimanzi1@gmail.com'];
 
 export const app = initializeApp(firebaseConfig);

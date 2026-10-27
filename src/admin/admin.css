@@ -217,77 +217,438 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .adm-dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
 
-/* ---------- Login ---------- */
+/* ---------- Login & Admin Authentication ---------- */
 .adm-login {
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  background: var(--bg);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  background:
+    radial-gradient(ellipse 60% 50% at 75% 30%, rgba(37, 99, 235, 0.07), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(59, 130, 246, 0.05), transparent 70%),
+    var(--bg);
   color: var(--ink);
 }
+
 .adm-login-side {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2rem;
-  padding: 2.5rem 3rem;
+  gap: 2.5rem;
+  padding: 3rem 3.5rem;
   background:
-    radial-gradient(ellipse 70% 55% at 20% 0%, rgba(59, 130, 246, 0.16), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(59, 130, 246, 0.08), transparent 70%),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 44px 44px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 44px 44px,
-    #0a0a0e;
+    radial-gradient(ellipse 70% 55% at 20% 0%, rgba(59, 130, 246, 0.12), transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px) 0 0 / 48px 48px,
+    #0a0a0f;
   border-right: 1px solid var(--edge);
 }
-.adm-login-side h2 { max-width: 460px; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; }
-.adm-login-features { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 2rem; }
-.adm-login-features li { display: flex; align-items: center; gap: 0.8rem; color: #cfcfd8; font-size: 0.98rem; }
-.adm-login-features svg { flex: none; width: 34px; height: 34px; padding: 7px; color: var(--ok); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; }
 
-.adm-login-main { display: flex; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
-.adm-login-card { width: 100%; max-width: 410px; display: flex; flex-direction: column; gap: 1rem; }
-.adm-login-card h1 { font-size: 2rem; letter-spacing: -0.03em; }
-.adm-login-card > .adm-muted { margin-top: -0.4rem; }
-
-.adm-field { display: flex; flex-direction: column; gap: 0.4rem; }
-.adm-field > span { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
-.adm-field input {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--edge-2);
-  border-radius: 12px;
-  color: var(--ink);
-  font-family: var(--font-main);
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.adm-field input:focus { border-color: var(--ok); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-.adm-passwrap { position: relative; }
-.adm-passwrap input { padding-right: 3rem; }
-.adm-passwrap button {
-  position: absolute;
-  top: 50%;
-  right: 0.5rem;
-  transform: translateY(-50%);
+.adm-login-hero {
   display: flex;
-  padding: 0.4rem;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.adm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.adm-dot-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 10px #3b82f6;
+}
+
+.adm-login-side h2 {
+  max-width: 480px;
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #f8fafc;
+}
+
+.adm-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.adm-features-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.adm-feat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  color: #60a5fa;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.adm-feat-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.adm-features-list strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.adm-features-list p {
+  font-size: 0.825rem;
+  color: #94a3b8;
+  margin-top: 0.15rem;
+  line-height: 1.4;
+}
+
+.adm-side-foot {
+  padding-top: 1rem;
+}
+
+/* Right Column / Auth Form */
+.adm-login-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.adm-login-shell {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+}
+
+.adm-card-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.12), transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.adm-auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2.5rem 2.25rem;
+  background: rgba(14, 14, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(59, 130, 246, 0.35);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.7),
+    0 0 35px -5px rgba(59, 130, 246, 0.08);
+}
+
+.adm-auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.adm-auth-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(99, 102, 241, 0.1));
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+  margin-bottom: 0.9rem;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.adm-auth-icon-wrap svg {
+  width: 26px;
+  height: 26px;
+}
+
+.adm-auth-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.adm-auth-sub {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0.35rem 0 0;
+  max-width: 340px;
+}
+
+/* Alerts */
+.adm-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.adm-alert-bad {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.adm-alert-info {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+}
+
+.adm-alert-svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Fields */
+.adm-auth-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.adm-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.adm-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-mono, monospace);
+}
+
+.adm-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.adm-forgot-link {
   background: none;
   border: none;
-  color: var(--ink-2);
+  padding: 0;
+  color: #60a5fa;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  font-family: inherit;
 }
-.adm-passwrap svg { width: 20px; height: 20px; }
-.adm-textbtn { align-self: flex-end; margin-top: -0.4rem; padding: 0; background: none; border: none; color: var(--ok); font-family: var(--font-main); font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-.adm-textbtn:hover { text-decoration: underline; }
-.adm-error { padding: 0.8rem 1rem; background: rgba(255, 80, 80, 0.1); border: 1px solid rgba(255, 80, 80, 0.35); border-radius: 10px; color: #ff9b9b; font-size: 0.9rem; }
-.adm-success { padding: 0.8rem 1rem; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 10px; color: #bfdbfe; font-size: 0.9rem; }
-.adm-divider { display: flex; align-items: center; gap: 0.75rem; color: var(--ink-3); font-size: 0.8rem; }
-.adm-divider::before, .adm-divider::after { content: ''; flex: 1; height: 1px; background: var(--edge-2); }
-.adm-back { align-self: center; margin-top: 0.5rem; font-size: 0.85rem; color: var(--ink-2); }
-.adm-back:hover { color: var(--ok); }
+
+.adm-forgot-link:hover:not(:disabled) {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.adm-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.adm-input-icon {
+  position: absolute;
+  left: 0.95rem;
+  width: 19px;
+  height: 19px;
+  color: #64748b;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.adm-auth-input {
+  width: 100%;
+  padding: 0.82rem 1rem 0.82rem 2.85rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  outline: none;
+}
+
+.adm-auth-input:focus {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.03);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+
+.adm-auth-input:focus + .adm-input-icon,
+.adm-input-wrap:focus-within .adm-input-icon {
+  color: #60a5fa;
+}
+
+.adm-auth-input.with-toggle {
+  padding-right: 3rem;
+}
+
+.adm-toggle-visibility {
+  position: absolute;
+  right: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.adm-toggle-visibility:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.adm-toggle-visibility svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Submit Button */
+.adm-btn-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #3b82f6;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
+  margin-top: 0.25rem;
+}
+
+.adm-btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.5);
+  transform: translateY(-1px);
+}
+
+.adm-btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.adm-btn-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.adm-spinner {
+  width: 18px;
+  height: 18px;
+  animation: adm-spin 0.8s linear infinite;
+}
+
+@keyframes adm-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Foot / Back to Site */
+.adm-auth-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.adm-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+}
+
+.adm-back-link:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.adm-back-icon {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.2s ease;
+}
+
+.adm-back-link:hover .adm-back-icon {
+  transform: translateX(-3px);
+}
 
 /* ---------- Brand ---------- */
 .adm-brand { display: flex; align-items: center; gap: 0.75rem; }
@@ -646,6 +1007,12 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   .adm-grid.two, .adm-grid.three { grid-template-columns: minmax(0, 1fr); }
 }
 
+@media (max-width: 520px) {
+  .adm-login-main { padding: 1.5rem 1rem; }
+  .adm-auth-card { padding: 2rem 1.25rem; border-radius: 16px; }
+  .adm-auth-header h1 { font-size: 1.5rem; }
+}
+
 @media (max-width: 640px) {
   .adm-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
   .adm-stat { padding: 0.95rem 1rem; }
@@ -669,26 +1036,7 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
 }
 
 
-/* ---------- Login page: neutral (no green) ---------- */
-.adm-login .adm-login-side {
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 44px 44px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 44px 44px,
-    #0b0b0e;
-}
-.adm-login .adm-logo { background: #fff; color: #0a0a0a; box-shadow: none; }
-.adm-login-features li { gap: 0.8rem; color: #b9b9c3; }
-.adm-login-features li::before { content: ''; flex: none; width: 14px; height: 1px; background: rgba(255, 255, 255, 0.4); }
-.adm-login .adm-field input:focus { border-color: rgba(255, 255, 255, 0.55); box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08); }
-.adm-login .adm-textbtn { color: #d8d8de; }
-.adm-login .btn-neon { background: #fff; border-color: #fff; color: #0a0a0a; }
-.adm-login .btn-neon:hover { box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15); }
-.adm-login .btn-neon:disabled { background: rgba(255, 255, 255, 0.85); }
-.adm-login .btn-neon-outline:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3); color: #fff; }
-.adm-login .btn-neon:focus-visible,
-.adm-login .btn-neon-outline:focus-visible { outline-color: #fff; }
-.adm-login .adm-success { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.2); color: #e6e6ea; }
-.adm-login .adm-back:hover { color: #fff; }
+
 
 
 /* ---------- Sidebar: compact, no scrollbar ---------- */

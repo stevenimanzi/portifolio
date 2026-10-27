@@ -21,18 +21,22 @@ try {
     die("Connection failed: " . $e->getMessage() . "\n");
 }
 
-// 1. Seed Admin User
-$adminEmail = 'stivenimanzi1@gmail.com';
-$adminPass = 'Enterin@12';
-$passwordHash = password_hash($adminPass, PASSWORD_BCRYPT);
+// 1. Seed Admin Users
+$admins = [
+    ['email' => 'info@stevenimanzi.info', 'pass' => 'Enterin@12', 'name' => 'Steven IMANZI'],
+    ['email' => 'stivenimanzi1@gmail.com', 'pass' => 'Enterin@12', 'name' => 'Steven IMANZI']
+];
 
 $stmt = $pdo->prepare("
     INSERT INTO admins (email, password_hash, display_name)
-    VALUES (?, ?, 'Steven IMANZI')
+    VALUES (?, ?, ?)
     ON DUPLICATE KEY UPDATE password_hash = VALUES(password_hash), display_name = VALUES(display_name)
 ");
-$stmt->execute([$adminEmail, $passwordHash]);
-echo "Admin user ($adminEmail) created/updated.\n";
+
+foreach ($admins as $adm) {
+    $stmt->execute([$adm['email'], password_hash($adm['pass'], PASSWORD_BCRYPT), $adm['name']]);
+    echo "Admin user ({$adm['email']}) created/updated.\n";
+}
 
 // 2. Seed Services
 $services = [
