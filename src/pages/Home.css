@@ -251,6 +251,12 @@
 .project-arc-card {
   padding: 0 !important;
   overflow: hidden;
+  border: 1px solid #000000 !important;
+}
+
+.project-arc-card.active {
+  border: 1px solid #000000 !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7) !important;
 }
 
 

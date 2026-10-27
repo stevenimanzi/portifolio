@@ -47,7 +47,8 @@
 }
 
 .cover-card.active {
-  box-shadow: 0 30px 60px rgba(59, 130, 246, 0.18), var(--shadow-card);
+  border-color: #000000;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), var(--shadow-card);
 }
 
 .cover-image {

@@ -211,12 +211,12 @@
   width: 320px;
   height: 420px;
   background: var(--bg-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #000000;
   border-radius: 24px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, border-color 0.3s ease;
   cursor: pointer;
   transform-origin: center center;
   
@@ -229,15 +229,15 @@
 
 .arc-carousel-card.active {
   z-index: 20;
-  border-color: var(--accent-primary);
-  box-shadow: 0 30px 60px rgba(59, 130, 246, 0.3);
+  border-color: #000000;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65);
 }
 
 .arc-carousel-card:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: #000000;
 }
 .arc-carousel-card.active:hover {
-  border-color: var(--accent-primary);
+  border-color: #000000;
 }
 
 /* Expanded State for detailed view */
@@ -250,7 +250,7 @@
   height: auto;
   min-height: 400px;
   width: 400px;
-  border-color: var(--accent-primary);
+  border-color: #000000;
 }
 
 .arc-carousel-card.dimmed {
