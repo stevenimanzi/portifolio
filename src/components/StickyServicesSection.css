@@ -1,0 +1,583 @@
+/* ==============================================================================
+   Sticky Services Deck & Container
+   Combined Framer Architecture: Sticky-Card 3D Stack + Container Frame
+   ============================================================================== */
+
+.sticky-services-container {
+  position: relative;
+  width: 100%;
+  padding: 4rem 1.5rem 6rem;
+  overflow: clip;
+  background: radial-gradient(circle at 50% 10%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at 80% 40%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+              var(--bg-primary);
+}
+
+.sticky-services-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* 1. Header & Marquee Ticker */
+.sticky-services-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.sticky-services-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: var(--radius-pill);
+  margin-bottom: 1.25rem;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+.sticky-services-badge .pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.sticky-services-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.sticky-services-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Capability Marquee Band (Container style) */
+.sticky-services-ticker {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0.75rem 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.sticky-ticker-track {
+  display: flex;
+  gap: 2.5rem;
+  width: max-content;
+  animation: ticker-slide 30s linear infinite;
+}
+
+.sticky-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.sticky-ticker-item {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #71717a;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  white-space: nowrap;
+}
+
+.sticky-ticker-item span.divider {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+/* 2. Interactive Navigation Pill Bar (Container Feature) */
+.sticky-services-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(18, 20, 28, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.sticky-nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: #9ca3af;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.sticky-nav-pill .pill-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.sticky-nav-pill:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sticky-nav-pill.active {
+  color: #ffffff;
+  background: rgba(59, 130, 246, 0.16);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
+}
+
+.sticky-nav-pill.active .pill-num {
+  color: var(--accent);
+  opacity: 1;
+  font-weight: 700;
+}
+
+/* 3. 3D Stack Stage (Sticky Card Deck) */
+.sticky-deck-viewport {
+  position: relative;
+  width: 100%;
+  min-height: 560px;
+  perspective: 1400px;
+  perspective-origin: 50% 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+/* Individual Stacked Card */
+.sticky-deck-card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 28px;
+  background: linear-gradient(150deg, rgba(22, 26, 36, 0.95) 0%, rgba(12, 14, 20, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  will-change: transform, opacity;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease;
+}
+
+.sticky-deck-card.is-active {
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85),
+              0 0 40px rgba(59, 130, 246, 0.18),
+              0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+/* Inside the Card: 2-Column Split Grid */
+.sticky-card-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  min-height: 520px;
+}
+
+/* Left Pane: Info & CTA */
+.sticky-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  gap: 1.5rem;
+  z-index: 2;
+}
+
+.sticky-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sticky-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.sticky-card-index {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #71717a;
+  letter-spacing: 0.08em;
+}
+
+.sticky-card-header h3 {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.sticky-card-summary {
+  font-size: 1.05rem;
+  color: #e4e4e7;
+  line-height: 1.6;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+
+.sticky-card-details {
+  font-size: 0.92rem;
+  color: #a1a1aa;
+  line-height: 1.65;
+}
+
+/* Feature/Deliverable Capability Chips */
+.sticky-card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.sticky-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  color: #d4d4d8;
+  font-weight: 500;
+}
+
+.sticky-chip svg {
+  color: var(--accent);
+  width: 14px;
+  height: 14px;
+}
+
+/* Card Bottom CTA */
+.sticky-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sticky-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.6rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.sticky-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.55);
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  color: #ffffff;
+}
+
+.sticky-btn-primary span.arrow {
+  transition: transform 0.25s ease;
+}
+
+.sticky-btn-primary:hover span.arrow {
+  transform: translateX(4px);
+}
+
+.sticky-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #a1a1aa;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.sticky-btn-ghost:hover {
+  color: #ffffff;
+}
+
+/* Right Pane: High-Res Visual Showcase */
+.sticky-card-visual {
+  position: relative;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+  background: #090a0f;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sticky-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+}
+
+.sticky-deck-card.is-active:hover .sticky-card-img {
+  transform: scale(1.04);
+}
+
+.sticky-card-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 14, 20, 0.1) 0%, rgba(12, 14, 20, 0.6) 100%),
+              radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.sticky-visual-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.sticky-visual-badge .live-dot {
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+}
+
+/* 4. Controls & Progress Deck Footer */
+.sticky-deck-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 1rem;
+}
+
+.sticky-control-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sticky-nav-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(22, 26, 36, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.sticky-nav-btn:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.sticky-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.sticky-deck-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sticky-progress-dot {
+  width: 24px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.sticky-progress-dot.active {
+  background: var(--accent);
+  width: 48px;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.sticky-deck-counter {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #71717a;
+  letter-spacing: 0.1em;
+}
+
+.sticky-deck-counter strong {
+  color: #ffffff;
+}
+
+/* ==============================================================================
+   Responsive Breakpoints
+   ============================================================================== */
+@media (max-width: 1024px) {
+  .sticky-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .sticky-card-visual {
+    height: 260px;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .sticky-card-content {
+    padding: 2.25rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sticky-services-container {
+    padding: 3rem 1rem 4rem;
+  }
+  .sticky-services-nav {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0.4rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .sticky-services-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .sticky-nav-pill {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.78rem;
+  }
+  .sticky-deck-viewport {
+    min-height: 640px;
+  }
+  .sticky-card-content {
+    padding: 1.75rem 1.25rem;
+    gap: 1.25rem;
+  }
+  .sticky-card-header h3 {
+    font-size: 1.5rem;
+  }
+  .sticky-card-summary {
+    font-size: 0.95rem;
+  }
+  .sticky-card-details {
+    font-size: 0.88rem;
+  }
+  .sticky-card-visual {
+    height: 200px;
+  }
+  .sticky-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  .sticky-btn-primary {
+    justify-content: center;
+  }
+  .sticky-btn-ghost {
+    justify-content: center;
+  }
+}

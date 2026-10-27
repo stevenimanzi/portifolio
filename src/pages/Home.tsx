@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Home.css';
 import Timeline from '../components/Timeline';
+import StickyServicesSection from '../components/StickyServicesSection';
 import { useContent } from '../content/ContentContext';
 
 
@@ -21,7 +22,6 @@ function swipeHandlers(move: (direction: 1 | -1) => void) {
 }
 
 export default function Home() {
-  const navigate = useNavigate();
   const { services: servicesData, projects, testimonials, site } = useContent();
   const featuredProjects = projects.map(p => ({
     id: p.id,
@@ -32,12 +32,10 @@ export default function Home() {
     link: p.link
   }));
 
-  const [carouselRaw, setCarouselIndex] = useState(2);
   const [projectRaw, setProjectCarouselIndex] = useState(2);
   const [activeProjectCardId, setActiveProjectCardId] = useState<string | null>(null);
   const [testimonialRaw, setActiveTestimonialIndex] = useState(0);
   // Items can be added / hidden from the dashboard, so keep every index inside the list.
-  const carouselIndex = Math.min(carouselRaw, Math.max(0, servicesData.length - 1));
   const projectCarouselIndex = Math.min(projectRaw, Math.max(0, featuredProjects.length - 1));
   const activeTestimonialIndex = Math.min(testimonialRaw, Math.max(0, testimonials.length - 1));
 
@@ -48,15 +46,6 @@ export default function Home() {
     else if (offset < -(totalLength - 1 - half)) offset += totalLength;
     return offset;
   };
-
-  // Autoplay for Services Carousel
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    interval = setInterval(() => {
-      setCarouselIndex(prev => (prev >= servicesData.length - 1 ? 0 : prev + 1));
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [servicesData.length]);
 
   // Autoplay for Testimonials
   useEffect(() => {
@@ -114,95 +103,7 @@ export default function Home() {
       </section>
 
       {servicesData.length > 0 && (
-      <section className="services-section section">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="gradient-text">What I Can Do For You</h2>
-            <span className="visually-hidden">Expert Full-Stack Web Development, Mobile Apps, QA Software Testing, SEO &amp; Database Management in Rwanda</span>
-            <p style={{color: '#aaa', marginTop: '1rem'}}>Specialized digital engineering, mobile applications, software quality assurance, database management, and organic search growth.</p>
-          </div>
-
-          <div
-            className="arc-carousel-container cf"
-            style={{marginTop: '4rem'}}
-            {...swipeHandlers(dir => setCarouselIndex(i => Math.min(servicesData.length - 1, Math.max(0, i + dir))))}
-          >
-            {servicesData.map((service, index) => {
-              const offset = getCircularOffset(index, carouselIndex, servicesData.length);
-              const distance = Math.abs(offset);
-
-              return (
-                <div
-                  key={service.id}
-                  className={`arc-carousel-card cf-card project-arc-card ${offset === 0 ? 'active' : ''}`}
-                  style={{
-                    '--o': offset,
-                    '--ao': distance,
-                    '--s': offset === 0 ? 1 : 1 - distance * 0.05,
-                    zIndex: offset === 0 ? 20 : 10 - distance,
-                    padding: 0,
-                    overflow: 'hidden'
-                  } as React.CSSProperties}
-                  onClick={() => {
-                    if (offset !== 0) {
-                      setCarouselIndex(index);
-                    } else {
-                      navigate(`/services?service=${service.id}`);
-                    }
-                  }}
-                >                  <div className="card-content-wrapper" style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
-                    <div className="project-expanded-image" style={{width: '100%', height: '160px', flexShrink: 0, borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
-                      <img src={service.image} alt={service.title} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-                    </div>
-
-                    <div style={{padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column'}}>
-                      <h3 style={{fontSize: '1.3rem', marginBottom: '0.4rem', color: '#fff'}}>{service.title}</h3>
-                      <p className="summary" style={{color: '#3b82f6', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '1rem'}}>{service.tag}</p>
-
-                      <p style={{fontSize: '0.9rem', color: '#ccc', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{service.summary}</p>
-
-                      <div className="details-content" style={{flex: 1}}>
-                      </div>
-
-                      {offset === 0 && (
-                        <Link to={`/services?service=${service.id}`} className="read-more-hint" style={{marginTop: 'auto', textDecoration: 'none', display: 'block'}} onClick={(e) => e.stopPropagation()}>
-                          Click to read more &rarr;
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="carousel-controls cf-controls">
-            <button 
-              className="carousel-btn prev-btn" 
-              onClick={() => setCarouselIndex(Math.max(0, carouselIndex - 1))}
-              disabled={carouselIndex === 0}
-            >
-              ← Prev
-            </button>
-            <div className="carousel-indicators">
-              {servicesData.map((_, index) => (
-                <span 
-                  key={index} 
-                  className={`indicator-dot ${index === carouselIndex ? 'active' : ''}`}
-                  onClick={() => setCarouselIndex(index)}
-                />
-              ))}
-            </div>
-            <button 
-              className="carousel-btn next-btn" 
-              onClick={() => setCarouselIndex(Math.min(servicesData.length - 1, carouselIndex + 1))}
-              disabled={carouselIndex === servicesData.length - 1}
-            >
-              Next →
-            </button>
-          </div>
-        </div>
-      </section>
+        <StickyServicesSection services={servicesData} showIntro={true} />
       )}
 
       {/* 2. Scroll timeline: one year at a time */}
