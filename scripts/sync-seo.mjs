@@ -14,17 +14,17 @@ const PROJECT = 'stevenimanzi-46e0f';
 
 const defaults = {
   siteName: 'Steven Imanzi',
-  description: 'Steven Imanzi is a leading Web and Software Developer based in Kigali, Rwanda, offering expert services in full-stack web development, SEO, AI automation, and CCTV installation.',
-  keywords: 'Software Developer Kigali, Web Developer Rwanda, IT Services Rwanda, Steven Imanzi, AI Automation, CCTV Installation Rwanda, SEO Services Kigali',
+  description: 'Steven Imanzi is a top-rated Full-Stack Web & Mobile App Developer, Software QA Engineer, and SEO Specialist based in Kigali, Rwanda. Transforming businesses with custom web apps, mobile solutions, software testing, database architecture, and high-converting search rankings.',
+  keywords: 'Software Developer Kigali, Web Developer Rwanda, Mobile App Development Rwanda, Flutter Developer Kigali, Software Testing QA Rwanda, Database Management MySQL, SEO Services Kigali, E-Commerce Development Rwanda, Best Web Developer East Africa, Steven Imanzi',
   author: 'Steven Imanzi',
-  canonicalUrl: 'https://stevenimanzi-46e0f.web.app',
+  canonicalUrl: 'https://stevenimanzi.info',
   ogImage: '/steven_imanzi.png',
   twitterHandle: '@StivenImanzi',
   robotsIndex: true,
   googleVerification: 'EZr_p_be_WwibXUZipjmZEq4qiDRIFPNoYiJdnxpVPI',
   home: {
-    title: 'Steven Imanzi | Web & Software Developer in Kigali, Rwanda',
-    description: 'Leading Web and Software Developer in Kigali, Rwanda offering full-stack solutions, SEO, and AI automation.',
+    title: 'Steven Imanzi | Full-Stack Web & Mobile Developer, Software QA & SEO in Rwanda',
+    description: 'Top-rated Full-Stack Web & Mobile Developer, Software QA Specialist, and SEO Expert in Kigali, Rwanda. Building scalable web applications, mobile apps, and robust databases.',
     image: ''
   }
 };

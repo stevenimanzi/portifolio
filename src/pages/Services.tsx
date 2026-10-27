@@ -52,15 +52,15 @@ export default function Services() {
   return (
     <div className="services-page">
       <PageHero
-        title="My"
-        accent="Services"
-        subtitle="Simple, reliable digital solutions to help your business grow, scale, and succeed."
+        title="What I can"
+        accent="do for you"
+        subtitle="End-to-end digital engineering, native mobile apps, software quality assurance, database management, and organic search growth."
       />
 
       <div className="page-body">
         <div className="page-intro">
-          <h2>What I can build for you</h2>
-          <p>From your first website to security cameras and AI automation, every service is handled end to end.</p>
+          <h2>What I can do for you</h2>
+          <p>From custom web applications to native mobile apps, software testing, and database architecture, every service is delivered end-to-end with high precision.</p>
         </div>
 
         <div

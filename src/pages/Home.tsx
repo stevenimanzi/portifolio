@@ -117,9 +117,9 @@ export default function Home() {
       <section className="services-section section">
         <div className="container">
           <div className="section-header">
-            <h2 className="gradient-text">My Services</h2>
-            <span className="visually-hidden">Expert Software &amp; Web Development Services in Rwanda</span>
-            <p style={{color: '#aaa', marginTop: '1rem'}}>I offer simple and reliable solutions to help your business succeed.</p>
+            <h2 className="gradient-text">What I Can Do For You</h2>
+            <span className="visually-hidden">Expert Full-Stack Web Development, Mobile Apps, QA Software Testing, SEO &amp; Database Management in Rwanda</span>
+            <p style={{color: '#aaa', marginTop: '1rem'}}>Specialized digital engineering, mobile applications, software quality assurance, database management, and organic search growth.</p>
           </div>
 
           <div

@@ -1,8 +1,11 @@
 import type { ProjectItem, SeoSettings, ServiceItem, SiteSettings, TestimonialItem } from './model';
 
-const srvWebDev = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800';
-const srvSeo = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800';
-const srvCctv = 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=800';
+import srvWebDev from '../assets/services/web_development.jpg';
+import srvMobileDev from '../assets/services/mobile_app_development.jpg';
+import srvSeo from '../assets/services/seo_optimization.jpg';
+import srvTesting from '../assets/services/software_testing.jpg';
+import srvEcommerce from '../assets/services/ecommerce_setup.jpg';
+import srvDatabase from '../assets/services/database_design.jpg';
 
 /* ---------- Images shipped with the site ----------
    Content stores image "tokens" like `builtin:projects/bms/bms_1.png`, so they keep working after a
@@ -15,8 +18,11 @@ const projectFiles = import.meta.glob<string>('../assets/projects/*/*.png', {
 
 export const assetMap: Record<string, string> = {
   'services/web-dev': srvWebDev,
+  'services/mobile-dev': srvMobileDev,
   'services/seo': srvSeo,
-  'services/cctv': srvCctv
+  'services/software-testing': srvTesting,
+  'services/ecommerce': srvEcommerce,
+  'services/database-design': srvDatabase
 };
 Object.entries(projectFiles).forEach(([path, url]) => {
   assetMap[path.replace('../assets/', '')] = url;
@@ -41,31 +47,61 @@ export const defaultServices: ServiceItem[] = [
     ...base,
     id: 'web-dev',
     order: 10,
-    title: 'Web & App Development',
-    tag: 'Development',
-    summary: 'Fast and beautiful websites that work perfectly on phones and computers.',
-    details: 'I build all kinds of websites from scratch. Whether you need an online store, a business site, or a custom system, I make sure it is easy to use and runs smoothly without crashing.',
+    title: 'Web Development',
+    tag: 'Web & Cloud',
+    summary: 'Custom high-performance web applications, responsive websites, and enterprise cloud platforms.',
+    details: 'I design and build tailored websites and web applications from the ground up using React, TypeScript, Node.js, and modern backends. From high-converting business platforms to complex cloud-hosted web apps, every product is optimized for speed, security, and exceptional user experience across all devices.',
     image: 'builtin:services/web-dev'
   },
   {
     ...base,
-    id: 'seo',
+    id: 'mobile-dev',
     order: 20,
-    title: 'SEO & Digital Marketing',
-    tag: 'Marketing',
-    summary: 'Helping more people find your business on Google and social media.',
-    details: "Having a website isn't enough if no one sees it. I help your website show up higher on Google and run online ads so you can reach more paying customers.",
+    title: 'Mobile App Development',
+    tag: 'iOS & Android',
+    summary: 'Native and cross-platform mobile apps built with Flutter and React Native.',
+    details: 'I develop intuitive, high-performance mobile applications that run smoothly on both Android and iOS devices. With offline-first data synchronization, seamless API integrations, push notifications, and polished UI/UX, I deliver apps ready for Google Play and Apple App Store deployment.',
+    image: 'builtin:services/mobile-dev'
+  },
+  {
+    ...base,
+    id: 'seo',
+    order: 30,
+    title: 'Search Engine Optimization (SEO)',
+    tag: 'Organic Growth',
+    summary: 'Data-driven on-page SEO, technical audits, and high-converting keyword rankings on Google.',
+    details: 'Transform organic search into your most consistent source of paying clients. I conduct deep technical SEO audits, implement structured schema markup, optimize Core Web Vitals performance, and craft semantic content strategies that elevate your website to the top of Google search results in Rwanda and globally.',
     image: 'builtin:services/seo'
   },
   {
     ...base,
-    id: 'cctv',
-    order: 30,
-    title: 'CCTV Camera Installation',
-    tag: 'Security',
-    summary: 'Setting up reliable security cameras for your home or business.',
-    details: 'Keep your property safe with modern security cameras. I handle the entire setup so you can easily watch everything live right from your phone, wherever you are.',
-    image: 'builtin:services/cctv'
+    id: 'software-testing',
+    order: 40,
+    title: 'Software Testing & QA',
+    tag: 'Quality Assurance',
+    summary: 'Automated testing suites, vulnerability scans, and comprehensive quality assurance.',
+    details: 'Ensure your software operates reliably without bugs, bottlenecks, or security holes. I provide automated testing, API validation, regression testing, user acceptance testing (UAT), stress testing, and code quality audits to guarantee production-ready reliability and zero downtime.',
+    image: 'builtin:services/software-testing'
+  },
+  {
+    ...base,
+    id: 'ecommerce',
+    order: 50,
+    title: 'E-Commerce Setup & Solutions',
+    tag: 'Online Stores',
+    summary: 'Full-featured online shops with local payment gateways (MTN MoMo, Airtel) and global checkouts.',
+    details: 'Launch high-converting e-commerce stores designed to sell 24/7. I implement secure checkouts with local mobile money (MTN MoMo, Airtel Money), Stripe, PayPal, multi-currency support, automated inventory management, and customer accounts to maximize sales and order volume.',
+    image: 'builtin:services/ecommerce'
+  },
+  {
+    ...base,
+    id: 'database-design',
+    order: 60,
+    title: 'Database Design & Management',
+    tag: 'Data Architecture',
+    summary: 'Scalable relational and NoSQL database schemas, query optimization, and secure data backups.',
+    details: 'Architect clean, robust, and scalable database systems using MySQL, PostgreSQL, MongoDB, and Firebase. I specialize in schema normalization, complex query optimization, automated daily backup pipelines, indexing strategies, and enterprise-grade data protection to keep your business data fast and secure.',
+    image: 'builtin:services/database-design'
   }
 ];
 
@@ -107,16 +143,16 @@ export const defaultSite: SiteSettings = {
   linkedin: 'https://www.linkedin.com/in/steven-imanzi/',
   x: 'https://x.com/StivenImanzi',
   instagram: 'https://www.instagram.com/stevenimanzi/',
-  footerText: 'Expert Web & Software Developer specializing in modern web applications, SEO, and CCTV installation.',
+  footerText: 'Expert Full-Stack Web & Mobile App Developer, Software QA & SEO Specialist based in Kigali, Rwanda.',
   yearsStart: 2024
 };
 
 export const defaultSeo: SeoSettings = {
   siteName: 'Steven Imanzi',
-  description: 'Steven Imanzi is a leading Web and Software Developer based in Kigali, Rwanda, offering expert services in full-stack web development, SEO, and CCTV installation.',
-  keywords: 'Software Developer Kigali, Web Developer Rwanda, IT Services Rwanda, Steven Imanzi, CCTV Installation Rwanda, SEO Services Kigali',
+  description: 'Steven Imanzi is a top-rated Full-Stack Web & Mobile App Developer, Software QA Engineer, and SEO Specialist based in Kigali, Rwanda. Transforming businesses with custom web apps, mobile solutions, software testing, database architecture, and high-converting search rankings.',
+  keywords: 'Software Developer Kigali, Web Developer Rwanda, Mobile App Development Rwanda, Flutter Developer Kigali, Software Testing QA Rwanda, Database Management MySQL, SEO Services Kigali, E-Commerce Development Rwanda, Best Web Developer East Africa, Steven Imanzi',
   author: 'Steven Imanzi',
-  canonicalUrl: 'https://stevenimanzi.com',
+  canonicalUrl: 'https://stevenimanzi.info',
   ogImage: '/steven_imanzi.png',
   twitterHandle: '@StivenImanzi',
   robotsIndex: true,
@@ -126,28 +162,28 @@ export const defaultSeo: SeoSettings = {
   orgCountry: 'RW',
   pages: {
     home: {
-      title: 'Steven Imanzi | Web & Software Developer in Kigali, Rwanda',
-      description: 'Leading Web and Software Developer in Kigali, Rwanda offering full-stack solutions, SEO, and CCTV installation.',
+      title: 'Steven Imanzi | Full-Stack Web & Mobile Developer, Software QA & SEO in Rwanda',
+      description: 'Top-rated Full-Stack Web & Mobile Developer, Software QA Specialist, and SEO Expert in Kigali, Rwanda. Building scalable web applications, mobile apps, and robust databases.',
       image: ''
     },
     skills: {
       title: 'Skills & Tech Stack | Steven Imanzi',
-      description: 'The tools, languages and frameworks Steven Imanzi uses to build fast, scalable web applications, plus his education and certifications.',
+      description: 'Explore the technical proficiencies of Steven Imanzi: React, Flutter, Node.js, Python, TypeScript, MySQL, PostgreSQL, QA Automation, and Cloud Infrastructure.',
       image: ''
     },
     services: {
-      title: 'Web, SEO & CCTV Services in Rwanda | Steven Imanzi',
-      description: 'Simple, reliable digital services for businesses in Rwanda: websites and apps, SEO and marketing, and CCTV camera installation.',
+      title: 'Services | What I Can Do For You | Steven Imanzi',
+      description: 'Explore professional digital engineering services: Web Development, Mobile App Development, SEO, Software Testing & QA, E-Commerce Setup, and Database Design & Management in Kigali, Rwanda.',
       image: ''
     },
     projects: {
       title: 'Projects & Portfolio | Steven Imanzi',
-      description: 'Systems, platforms and websites built by Steven Imanzi to solve real business problems across Rwanda.',
+      description: 'Explore enterprise systems, web applications, and digital platforms engineered by Steven Imanzi for leading businesses across Rwanda and internationally.',
       image: ''
     },
     contact: {
-      title: 'Contact Steven Imanzi | Web Developer in Kigali',
-      description: 'Have a project in mind? Contact Steven Imanzi by message, email, phone or WhatsApp. Based in Kigali, Rwanda.',
+      title: 'Contact Steven Imanzi | Software & Web Developer in Kigali',
+      description: 'Ready to build high-performance software or elevate your online presence? Contact Steven Imanzi for consultations, project estimates, or technical partnerships.',
       image: ''
     }
   }
