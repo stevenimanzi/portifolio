@@ -5,6 +5,10 @@
 DirectoryIndex index.html index.php
 Options -Indexes
 
+# MIME types & Charsets
+AddType "application/xml; charset=UTF-8" .xml
+AddType "text/plain; charset=UTF-8" .txt
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -36,6 +40,14 @@ Options -Indexes
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"
     Header set Expires 0
+  </FilesMatch>
+
+  # Sitemap & robots freshness
+  <FilesMatch "(sitemap\.xml|robots\.txt)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+    Header set X-Robots-Tag "all"
   </FilesMatch>
 
   # Long cache for hashed static assets
