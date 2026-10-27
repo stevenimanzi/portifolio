@@ -272,10 +272,7 @@ export default function FramerMarqueeCarousel({
 
                   {/* Project Details */}
                   <div className="framer-showcase-body">
-                    <div className="framer-showcase-title-row">
-                      <h3 className="framer-card-title">{item.title}</h3>
-                      <span className="framer-showcase-tag">{item.tag}</span>
-                    </div>
+                    <h3 className="framer-card-title">{item.title}</h3>
                     <p className="framer-card-text">{item.description}</p>
                   </div>
 

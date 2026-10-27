@@ -53,7 +53,10 @@ export default function Home() {
                 Steven Imanzi - Top Web and Software Developer in Kigali, Rwanda
               </h1>
               <div className="syntax-huge-text" aria-hidden="true">
-                STEVEN<br/>IMANZI
+                <span>STEVEN</span>
+                <span className="syntax-name-space">&nbsp;</span>
+                <br className="syntax-name-br" />
+                <span>IMANZI</span>
               </div>
               <p className="syntax-role">{site.role}</p>
             </div>
