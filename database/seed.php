@@ -117,105 +117,33 @@ foreach ($services as $s) {
 echo "Services seeded (" . count($services) . ").\n";
 
 // 3. Seed Projects
+$pdo->exec("DELETE FROM projects");
+
 $projects = [
     [
-        'id' => 'icyerekezo',
+        'id' => 'clear_finance',
         'order_index' => 10,
-        'name' => 'Icyerekezo Digital',
-        'type' => 'Web App',
-        'description' => 'A top software company in Kigali, Rwanda that builds custom tools for businesses.',
-        'link' => 'https://icyerekezodigital.com',
+        'name' => 'Clear Finance',
+        'type' => 'Personal Financial Management System',
+        'description' => 'A personal finance management system that tracks income, expenses, and budgets with real-time reports and smart decision support.',
+        'link' => 'https://clearfinance.web.app/',
         'images' => [
-            'builtin:projects/icyerekezo/icyerekezo_1.png',
-            'builtin:projects/icyerekezo/icyerekezo_2.png',
-            'builtin:projects/icyerekezo/icyerekezo_3.png',
-            'builtin:projects/icyerekezo/icyerekezo_4.png',
-            'builtin:projects/icyerekezo/icyerekezo_5.png',
-            'builtin:projects/icyerekezo/icyerekezo_6.png'
-        ]
-    ],
-    [
-        'id' => 'bms',
-        'order_index' => 20,
-        'name' => 'BMS System',
-        'type' => 'Business System',
-        'description' => 'A system that helps businesses manage their daily work, sales, and reports automatically.',
-        'link' => 'https://bms.icyerekezodigital.com',
-        'images' => [
-            'builtin:projects/bms/bms_1.png',
-            'builtin:projects/bms/bms_2.png',
-            'builtin:projects/bms/bms_3.png',
-            'builtin:projects/bms/bms_4.png',
-            'builtin:projects/bms/bms_5.png',
-            'builtin:projects/bms/bms_6.png'
-        ]
-    ],
-    [
-        'id' => 'e_commerce',
-        'order_index' => 30,
-        'name' => 'E-Commerce Market',
-        'type' => 'E-Commerce',
-        'description' => 'A popular online market in Rwanda where people can buy and sell things like electronics and food.',
-        'link' => 'https://icyerekezodigital.online',
-        'images' => [
-            'builtin:projects/market/market_1.png',
-            'builtin:projects/market/market_2.png',
-            'builtin:projects/market/market_3.png',
-            'builtin:projects/market/market_4.png',
-            'builtin:projects/market/market_5.png',
-            'builtin:projects/market/market_6.png'
-        ]
-    ],
-    [
-        'id' => 'noguchi',
-        'order_index' => 40,
-        'name' => 'Noguchi',
-        'type' => 'Web App',
-        'description' => 'A beautiful and easy-to-use website with a clean and modern design.',
-        'link' => '#',
-        'images' => [
-            'builtin:projects/noguchi/noguchi_1.png',
-            'builtin:projects/noguchi/noguchi_2.png',
-            'builtin:projects/noguchi/noguchi_3.png',
-            'builtin:projects/noguchi/noguchi_4.png',
-            'builtin:projects/noguchi/noguchi_5.png',
-            'builtin:projects/noguchi/noguchi_6.png'
-        ]
-    ],
-    [
-        'id' => 'oms',
-        'order_index' => 50,
-        'name' => 'OMS',
-        'type' => 'Business System',
-        'description' => 'A system that helps factories easily manage their orders, machines, and daily work.',
-        'link' => 'https://icyerekezooms.com',
-        'images' => [
-            'builtin:projects/oms/oms_1.png',
-            'builtin:projects/oms/oms_2.png',
-            'builtin:projects/oms/oms_3.png',
-            'builtin:projects/oms/oms_4.png',
-            'builtin:projects/oms/oms_5.png'
-        ]
-    ],
-    [
-        'id' => 'thelight',
-        'order_index' => 60,
-        'name' => 'The Light',
-        'type' => 'Web App',
-        'description' => 'A platform where people can find real jobs, scholarships, and career advice in Africa.',
-        'link' => 'https://thelightofengineer.com',
-        'images' => [
-            'builtin:projects/thelight/thelight_1.png',
-            'builtin:projects/thelight/thelight_2.png',
-            'builtin:projects/thelight/thelight_3.png',
-            'builtin:projects/thelight/thelight_4.png',
-            'builtin:projects/thelight/thelight_5.png',
-            'builtin:projects/thelight/thelight_6.png'
+            'builtin:projects/Clear_Finance/screen1.png',
+            'builtin:projects/Clear_Finance/screen2.png',
+            'builtin:projects/Clear_Finance/screen3.png',
+            'builtin:projects/Clear_Finance/screen4.png',
+            'builtin:projects/Clear_Finance/screen5.png',
+            'builtin:projects/Clear_Finance/screen6.png',
+            'builtin:projects/Clear_Finance/screen7.png',
+            'builtin:projects/Clear_Finance/screen8.png',
+            'builtin:projects/Clear_Finance/screen9.png',
+            'builtin:projects/Clear_Finance/screen10.png',
+            'builtin:projects/Clear_Finance/screen11.png'
         ]
     ],
     [
         'id' => 'star_news_africa',
-        'order_index' => 70,
+        'order_index' => 20,
         'name' => 'Star News Africa',
         'type' => 'Newsletter Platform',
         'description' => 'A leading digital news publication and newsletter platform delivering authentic, independent news and stories across Africa.',
@@ -231,24 +159,98 @@ $projects = [
         ]
     ],
     [
-        'id' => 'clear_finance',
-        'order_index' => 80,
-        'name' => 'Clear Finance',
-        'type' => 'Financial Management System',
-        'description' => 'A personal finance management system that tracks income, expenses, and budgets with real-time reports and smart decision support.',
-        'link' => 'https://clearfinance.web.app/',
+        'id' => 'icyerekezo_digital_innovation',
+        'order_index' => 30,
+        'name' => 'Icyerekezo Digital Innovation',
+        'type' => 'Software & Technology Agency',
+        'description' => 'Official platform for Icyerekezo Digital Innovation, showcasing enterprise software engineering, digital transformation, and client solutions.',
+        'link' => 'https://icyerekezodigital.com',
         'images' => [
-            'builtin:projects/Clear_Finance/screen1.png',
-            'builtin:projects/Clear_Finance/screen2.png',
-            'builtin:projects/Clear_Finance/screen3.png',
-            'builtin:projects/Clear_Finance/screen4.png',
-            'builtin:projects/Clear_Finance/screen5.png',
-            'builtin:projects/Clear_Finance/screen6.png',
-            'builtin:projects/Clear_Finance/screen7.png',
-            'builtin:projects/Clear_Finance/screen8.png',
-            'builtin:projects/Clear_Finance/screen9.png',
-            'builtin:projects/Clear_Finance/screen10.png',
-            'builtin:projects/Clear_Finance/screen11.png'
+            'builtin:projects/icyerekezo_digital_innovation/icyerekezo_1.png',
+            'builtin:projects/icyerekezo_digital_innovation/icyerekezo_2.png',
+            'builtin:projects/icyerekezo_digital_innovation/icyerekezo_3.png',
+            'builtin:projects/icyerekezo_digital_innovation/icyerekezo_4.png',
+            'builtin:projects/icyerekezo_digital_innovation/icyerekezo_5.png',
+            'builtin:projects/icyerekezo_digital_innovation/icyerekezo_6.png'
+        ]
+    ],
+    [
+        'id' => 'icyerekezo_bms',
+        'order_index' => 40,
+        'name' => 'Icyerekezo BMS',
+        'type' => 'Business Management System',
+        'description' => 'An enterprise business management system automating sales tracking, financial accounting, inventory, and analytics reporting.',
+        'link' => 'https://bms.icyerekezodigital.com',
+        'images' => [
+            'builtin:projects/icyerekezo_bms/bms_1.png',
+            'builtin:projects/icyerekezo_bms/bms_2.png',
+            'builtin:projects/icyerekezo_bms/bms_3.png',
+            'builtin:projects/icyerekezo_bms/bms_4.png',
+            'builtin:projects/icyerekezo_bms/bms_5.png',
+            'builtin:projects/icyerekezo_bms/bms_6.png'
+        ]
+    ],
+    [
+        'id' => 'icyerekezo_oms',
+        'order_index' => 50,
+        'name' => 'Icyerekezo OMS',
+        'type' => 'Operations & Machine System',
+        'description' => 'A comprehensive operations and manufacturing system for managing workflow pipelines, equipment diagnostics, and machine maintenance.',
+        'link' => 'https://icyerekezooms.com',
+        'images' => [
+            'builtin:projects/icyerekezo_oms/oms_1.png',
+            'builtin:projects/icyerekezo_oms/oms_2.png',
+            'builtin:projects/icyerekezo_oms/oms_3.png',
+            'builtin:projects/icyerekezo_oms/oms_4.png',
+            'builtin:projects/icyerekezo_oms/oms_5.png'
+        ]
+    ],
+    [
+        'id' => 'noguchi_holding_ltd',
+        'order_index' => 60,
+        'name' => 'Noguchi Holding Ltd',
+        'type' => 'Corporate Investment Platform',
+        'description' => 'Modern corporate platform representing multinational holding operations, investment portfolios, and strategic ventures.',
+        'link' => '#',
+        'images' => [
+            'builtin:projects/noguchi_holding_ltd/noguchi_1.png',
+            'builtin:projects/noguchi_holding_ltd/noguchi_2.png',
+            'builtin:projects/noguchi_holding_ltd/noguchi_3.png',
+            'builtin:projects/noguchi_holding_ltd/noguchi_4.png',
+            'builtin:projects/noguchi_holding_ltd/noguchi_5.png',
+            'builtin:projects/noguchi_holding_ltd/noguchi_6.png'
+        ]
+    ],
+    [
+        'id' => 'e_commerce',
+        'order_index' => 70,
+        'name' => 'Icyerekezo E-Commerce',
+        'type' => 'Multi-Vendor E-Commerce Platform',
+        'description' => 'A popular online marketplace in Rwanda where people can buy and sell electronics, groceries, and everyday essentials with mobile money payments.',
+        'link' => 'https://icyerekezodigital.online',
+        'images' => [
+            'builtin:projects/e_commerce/market_1.png',
+            'builtin:projects/e_commerce/market_2.png',
+            'builtin:projects/e_commerce/market_3.png',
+            'builtin:projects/e_commerce/market_4.png',
+            'builtin:projects/e_commerce/market_5.png',
+            'builtin:projects/e_commerce/market_6.png'
+        ]
+    ],
+    [
+        'id' => 'the_light_of_engineering',
+        'order_index' => 80,
+        'name' => 'The Light of Engineering',
+        'type' => 'Career & Engineering Portal',
+        'description' => 'An interactive platform where engineers and students find verified job openings, international scholarships, and professional mentorship across Africa.',
+        'link' => 'https://thelightofengineer.com',
+        'images' => [
+            'builtin:projects/the_light_of_engineering/thelight_1.png',
+            'builtin:projects/the_light_of_engineering/thelight_2.png',
+            'builtin:projects/the_light_of_engineering/thelight_3.png',
+            'builtin:projects/the_light_of_engineering/thelight_4.png',
+            'builtin:projects/the_light_of_engineering/thelight_5.png',
+            'builtin:projects/the_light_of_engineering/thelight_6.png'
         ]
     ]
 ];

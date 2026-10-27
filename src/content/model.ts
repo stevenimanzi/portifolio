@@ -117,8 +117,14 @@ export function mergeItems<T extends Base>(
 ): T[] {
   const overrides = new Map<string, RawDoc>();
   const custom: RawDoc[] = [];
+  const defaultMap = new Map<string, T>(defaults.map(b => [b.id, b]));
+
   docs.forEach(d => {
-    if (typeof d.builtinId === 'string' && d.builtinId) overrides.set(d.builtinId, d);
+    const matchId =
+      (typeof d.builtinId === 'string' && d.builtinId && defaultMap.has(d.builtinId) ? d.builtinId : null) ||
+      (typeof d.id === 'string' && defaultMap.has(d.id) ? d.id : null);
+
+    if (matchId) overrides.set(matchId, d);
     else custom.push(d);
   });
 
@@ -136,7 +142,7 @@ export function mergeItems<T extends Base>(
       source: 'override',
       published: rest.published !== false,
       deleted: rest.deleted === true,
-      order: typeof rest.order === 'number' ? rest.order : base.order
+      order: typeof rest.order === 'number' ? rest.order : (typeof rest.order_index === 'number' ? rest.order_index : base.order)
     } as unknown as T;
   });
 
@@ -149,7 +155,7 @@ export function mergeItems<T extends Base>(
       source: 'custom',
       published: d.published !== false,
       deleted: false,
-      order: typeof d.order === 'number' ? d.order : 1000
+      order: typeof d.order === 'number' ? d.order : (typeof d.order_index === 'number' ? d.order_index : 1000)
     } as unknown as T);
   });
 
