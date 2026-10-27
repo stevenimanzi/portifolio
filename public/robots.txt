@@ -1,5 +1,6 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://stevenimanzi-46e0f.web.app/sitemap.xml
+# Sitemaps
+Sitemap: https://stevenimanzi.info/sitemap.xml
