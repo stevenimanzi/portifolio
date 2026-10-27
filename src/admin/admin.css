@@ -251,30 +251,6 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   gap: 1.5rem;
 }
 
-.adm-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  color: #60a5fa;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.adm-dot-pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #3b82f6;
-  box-shadow: 0 0 10px #3b82f6;
-}
-
 .adm-login-side h2 {
   max-width: 480px;
   font-size: clamp(1.8rem, 2.6vw, 2.4rem);
@@ -303,19 +279,18 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.22);
-  color: #60a5fa;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  color: #3b82f6;
   flex-shrink: 0;
   margin-top: 2px;
 }
 
 .adm-feat-icon svg {
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
 }
 
 .adm-features-list strong {
@@ -383,25 +358,6 @@ button:disabled { opacity: 0.55; cursor: not-allowed; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-.adm-auth-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(99, 102, 241, 0.1));
-  border: 1px solid rgba(59, 130, 246, 0.35);
-  color: #60a5fa;
-  margin-bottom: 0.9rem;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-}
-
-.adm-auth-icon-wrap svg {
-  width: 26px;
-  height: 26px;
 }
 
 .adm-auth-header h1 {

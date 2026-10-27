@@ -11,7 +11,6 @@ import {
   EyeSlashIcon,
   LockClosedIcon,
   EnvelopeIcon,
-  ShieldCheckIcon,
   ArrowLeftIcon,
   CheckIcon,
   ExclamationCircleIcon,
@@ -175,10 +174,6 @@ export default function AdminLogin() {
         </div>
 
         <div className="adm-login-hero">
-          <div className="adm-pill">
-            <span className="adm-dot-pulse" aria-hidden="true" />
-            <span>Portal v2.4 Active</span>
-          </div>
           <h2>Everything about your digital portfolio, in one unified place.</h2>
           <ul className="adm-features-list">
             {features.map(f => (
@@ -207,9 +202,6 @@ export default function AdminLogin() {
 
           <form className="adm-auth-card" onSubmit={handleSubmit} noValidate>
             <div className="adm-auth-header">
-              <div className="adm-auth-icon-wrap" aria-hidden="true">
-                <ShieldCheckIcon />
-              </div>
               <h1>Admin Gateway</h1>
               <p className="adm-auth-sub">
                 Sign in to manage portfolio content, inspect live visitor telemetry, and review inquiries.
