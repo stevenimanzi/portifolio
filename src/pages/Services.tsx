@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useContent } from '../content/ContentContext';
 import PageHero from '../components/PageHero';
 import CtaBand from '../components/CtaBand';
-import StickyServicesSection from '../components/StickyServicesSection';
+import FramerMarqueeCarousel from '../components/FramerMarqueeCarousel';
 import './Services.css';
 
 export default function Services() {
@@ -23,11 +23,21 @@ export default function Services() {
         subtitle="End-to-end digital engineering, native mobile apps, software quality assurance, database management, and organic search growth."
       />
 
-      <div className="services-deck-wrap">
-        <StickyServicesSection
-          services={servicesData}
-          initialServiceId={requested}
-          showIntro={false}
+      <div className="services-carousel-wrap">
+        <FramerMarqueeCarousel
+          eyebrow="SPECIALIZED EXPERTISE"
+          title={<>Full-Spectrum <strong>Capabilities.</strong></>}
+          subtitle="From custom web applications to native mobile apps, software testing, and database architecture, every service is delivered end-to-end with high precision."
+          direction="left"
+          items={servicesData.map(s => ({
+            id: s.id,
+            title: s.title,
+            tag: s.tag,
+            description: s.details || s.summary,
+            image: s.image,
+            detailLink: `/contact?service=${s.id}`,
+            ctaText: 'Request Service'
+          }))}
         />
       </div>
 

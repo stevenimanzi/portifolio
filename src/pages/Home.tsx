@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Home.css';
 import Timeline from '../components/Timeline';
-import StickyServicesSection from '../components/StickyServicesSection';
-import MyWorkCarousel from '../components/MyWorkCarousel';
+import FramerMarqueeCarousel from '../components/FramerMarqueeCarousel';
 import { useContent } from '../content/ContentContext';
 
 export default function Home() {
@@ -63,8 +62,24 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 1. Services - Framer TestimonialCarousel Design System */}
       {servicesData.length > 0 && (
-        <StickyServicesSection services={servicesData} showIntro={true} />
+        <FramerMarqueeCarousel
+          sectionId="services"
+          eyebrow="CAPABILITIES &amp; SERVICES"
+          title={<>What I Can <strong>Do For You.</strong></>}
+          subtitle="Specialized digital engineering, mobile applications, software quality assurance, database management, and organic search growth."
+          direction="left"
+          items={servicesData.map(s => ({
+            id: s.id,
+            title: s.title,
+            tag: s.tag,
+            description: s.summary,
+            image: s.image,
+            detailLink: `/contact?service=${s.id}`,
+            ctaText: 'Request Service'
+          }))}
+        />
       )}
 
       {/* 2. Scroll timeline: one year at a time */}
@@ -72,7 +87,23 @@ export default function Home() {
 
       {/* 3. Featured Projects - Framer TestimonialCarousel Design System */}
       {projects.length > 0 && (
-        <MyWorkCarousel projects={projects} />
+        <FramerMarqueeCarousel
+          sectionId="my-work"
+          eyebrow="FEATURED PORTFOLIO"
+          title={<>Selected Works &amp; <strong>Engineering.</strong></>}
+          subtitle="A curated selection of real production systems, enterprise business solutions, and web applications built from scratch."
+          direction="right"
+          items={projects.map(p => ({
+            id: p.id,
+            title: p.name,
+            tag: p.type,
+            description: p.description,
+            image: p.images[0] || '',
+            link: p.link !== '#' ? p.link : undefined,
+            detailLink: `/projects?project=${p.id}`,
+            ctaText: 'Explore Project'
+          }))}
+        />
       )}
 
       {/* 4. Testimonials Section */}
