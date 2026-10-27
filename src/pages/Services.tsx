@@ -25,8 +25,7 @@ export default function Services() {
 
       <div className="services-carousel-wrap">
         <FramerMarqueeCarousel
-          eyebrow="SPECIALIZED EXPERTISE"
-          title={<>Full-Spectrum <strong>Capabilities.</strong></>}
+          title={<>Full-spectrum <br/><strong>capabilities.</strong></>}
           subtitle="From custom web applications to native mobile apps, software testing, and database architecture, every service is delivered end-to-end with high precision."
           direction="left"
           items={servicesData.map(s => ({

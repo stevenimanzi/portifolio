@@ -14,13 +14,13 @@ export interface FramerCarouselItem {
 }
 
 interface FramerMarqueeCarouselProps {
-  eyebrow: string;
+  eyebrow?: string;
   title: React.ReactNode;
   subtitle: string;
   items: FramerCarouselItem[];
   sectionId?: string;
   direction?: 'left' | 'right';
-  speed?: number; // pixels per second (default: 40)
+  speed?: number; // pixels per second (default: 42)
 }
 
 export default function FramerMarqueeCarousel({
@@ -39,7 +39,7 @@ export default function FramerMarqueeCarousel({
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Position and physics refs (keeps 60fps without triggering React re-renders)
+  // Position and physics refs (60fps continuous animation without triggering React re-renders)
   const posRef = useRef({
     x: 0,
     lastTime: 0,
@@ -53,7 +53,7 @@ export default function FramerMarqueeCarousel({
   });
 
   const total = items.length;
-  // Double buffer for seamless infinite loop
+  // Double buffer for seamless infinite loop (100% like Framer InfiniteTrack)
   const duplicated = [...items, ...items];
 
   // Measure one set width
@@ -83,6 +83,7 @@ export default function FramerMarqueeCarousel({
     const tick = (now: number) => {
       if (!active) return;
       const p = posRef.current;
+      if (p.lastTime === 0) p.lastTime = now;
       const dt = Math.min(now - p.lastTime, 100);
       p.lastTime = now;
 
@@ -94,7 +95,7 @@ export default function FramerMarqueeCarousel({
             p.velocity *= Math.pow(0.92, dt / 16.67);
           } else {
             p.velocity = 0;
-            // Base marquee speed
+            // Base continuous marquee speed with hover deceleration
             const speedMultiplier = isHovered ? 0.2 : 1;
             const step = (speed * (dt / 1000)) * speedMultiplier;
             p.x += direction === 'left' ? -step : step;
@@ -124,7 +125,7 @@ export default function FramerMarqueeCarousel({
     };
   }, [direction, speed, isHovered]);
 
-  // Pointer drag events
+  // Pointer drag events with velocity tracking
   const onPointerDown = (e: React.PointerEvent) => {
     const p = posRef.current;
     p.isPointerDown = true;
@@ -176,16 +177,18 @@ export default function FramerMarqueeCarousel({
     <section
       id={sectionId}
       className="framer-tc-section"
-      aria-label={typeof eyebrow === 'string' ? eyebrow : 'Carousel section'}
+      aria-label="Carousel section"
     >
       <div className="framer-tc-outer">
         {/* 1. Header & Controls */}
         <div className="framer-tc-header">
           <div className="framer-tc-intro-content">
-            <span className="framer-tc-eyebrow">
-              <span className="eyebrow-pulse-dot" />
-              <span>{eyebrow}</span>
-            </span>
+            {eyebrow && (
+              <span className="framer-tc-eyebrow">
+                <span className="eyebrow-pulse-dot" />
+                <span>{eyebrow}</span>
+              </span>
+            )}
 
             <h2 className="framer-tc-title">{title}</h2>
             <p className="framer-tc-subtitle">{subtitle}</p>
@@ -195,7 +198,7 @@ export default function FramerMarqueeCarousel({
             <button
               type="button"
               className="framer-tc-nav-btn"
-              onClick={() => navigateBy(22)}
+              onClick={() => navigateBy(24)}
               aria-label="Scroll carousel left"
             >
               ←
@@ -203,7 +206,7 @@ export default function FramerMarqueeCarousel({
             <button
               type="button"
               className="framer-tc-nav-btn"
-              onClick={() => navigateBy(-22)}
+              onClick={() => navigateBy(-24)}
               aria-label="Scroll carousel right"
             >
               →
@@ -242,12 +245,12 @@ export default function FramerMarqueeCarousel({
                   aria-label={item.title}
                 >
                   <div>
-                    {/* Card Top: 5 Stars + Category Tag */}
+                    {/* Card Top: 5 Stars + Category Tag (NO screen count badge) */}
                     <div className="framer-card-top-row">
                       <div
                         className="framer-card-stars"
                         role="img"
-                        aria-label="5 out of 5 stars standard"
+                        aria-label="5 out of 5 stars quality build"
                       >
                         {[1, 2, 3, 4, 5].map(star => (
                           <svg
@@ -275,7 +278,7 @@ export default function FramerMarqueeCarousel({
                           target="_blank"
                           rel="noopener noreferrer"
                           className="framer-card-action-btn"
-                          aria-label={`Visit ${item.title}`}
+                          aria-label={`Visit live website for ${item.title}`}
                           title="Open live link"
                           onClick={e => isDragging && e.preventDefault()}
                         >
@@ -302,7 +305,7 @@ export default function FramerMarqueeCarousel({
                     </div>
                   </div>
 
-                  {/* Card Footer */}
+                  {/* Card Footer: Author info & CTA */}
                   <div className="framer-card-footer">
                     <div className="framer-author-group">
                       <div className="framer-author-avatar" aria-hidden="true">

@@ -66,8 +66,7 @@ export default function Home() {
       {servicesData.length > 0 && (
         <FramerMarqueeCarousel
           sectionId="services"
-          eyebrow="CAPABILITIES &amp; SERVICES"
-          title={<>What I Can <strong>Do For You.</strong></>}
+          title={<>What I can <br/><strong>do for you.</strong></>}
           subtitle="Specialized digital engineering, mobile applications, software quality assurance, database management, and organic search growth."
           direction="left"
           items={servicesData.map(s => ({
@@ -89,8 +88,7 @@ export default function Home() {
       {projects.length > 0 && (
         <FramerMarqueeCarousel
           sectionId="my-work"
-          eyebrow="FEATURED PORTFOLIO"
-          title={<>Selected Works &amp; <strong>Engineering.</strong></>}
+          title={<>Selected works <br/>&amp; <strong>engineering.</strong></>}
           subtitle="A curated selection of real production systems, enterprise business solutions, and web applications built from scratch."
           direction="right"
           items={projects.map(p => ({
