@@ -30,7 +30,7 @@ CREATE TABLE `admins` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `admins` (
 
 LOCK TABLES `admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT INTO `admins` VALUES (1,'stivenimanzi1@gmail.com','$2y$12$eiBSDwfKwm4J9Z.TFo6lNu/uoYfWW.iZaXeiLYXfwOIpDh6wMNhOS','Steven IMANZI','2026-10-27 13:22:17');
+INSERT INTO `admins` VALUES (1,'stivenimanzi1@gmail.com','$2y$12$whWE7V8Xa0WsACcKPwh2qeh8pCGt121PYeTu4Qd6DmgRFKyCf4BdK','Steven IMANZI','2026-10-27 13:22:17');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +136,7 @@ CREATE TABLE `services` (
 
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
-INSERT INTO `services` VALUES ('ai','Artificial Intelligence','Automation','Using smart computer tools to save you time and do the heavy lifting.','I set up smart AI systems that can do your boring, repetitive work for you. This means you can get more done, save money, and let the computer answer customer questions automatically.','builtin:services/ai',20,1,0,'2026-10-27 13:22:18','2026-10-27 13:22:18'),('cctv','CCTV Camera Installation','Security','Setting up reliable security cameras for your home or business.','Keep your property safe with modern security cameras. I handle the entire setup so you can easily watch everything live right from your phone, wherever you are.','builtin:services/cctv',40,1,0,'2026-10-27 13:22:18','2026-10-27 13:22:18'),('seo','SEO & Digital Marketing','Marketing','Helping more people find your business on Google and social media.','Having a website isn\'t enough if no one sees it. I help your website show up higher on Google and run online ads so you can reach more paying customers.','builtin:services/seo',30,1,0,'2026-10-27 13:22:18','2026-10-27 13:22:18'),('social','Social Media Management','Social Media','Creating great posts and managing your pages to grow your audience.','I help your business grow on platforms like Instagram, Facebook, and LinkedIn. I create the posts, schedule them, and talk to your followers so you don\'t have to worry about it.','builtin:services/social',50,1,0,'2026-10-27 13:22:18','2026-10-27 13:22:18'),('web-dev','Web & App Development','Development','Fast and beautiful websites that work perfectly on phones and computers.','I build all kinds of websites from scratch. Whether you need an online store, a business site, or a custom system, I make sure it is easy to use and runs smoothly without crashing.','builtin:services/web-dev',10,1,0,'2026-10-27 13:22:18','2026-10-27 13:22:18');
+INSERT INTO `services` VALUES ('cctv','CCTV Camera Installation','Security','Setting up reliable security cameras for your home or business.','Keep your property safe with modern security cameras. I handle the entire setup so you can easily watch everything live right from your phone, wherever you are.','builtin:services/cctv',30,1,0,'2026-10-27 13:22:18','2026-10-27 13:53:36'),('seo','SEO & Digital Marketing','Marketing','Helping more people find your business on Google and social media.','Having a website isn\'t enough if no one sees it. I help your website show up higher on Google and run online ads so you can reach more paying customers.','builtin:services/seo',20,1,0,'2026-10-27 13:22:18','2026-10-27 13:53:36'),('web-dev','Web & App Development','Development','Fast and beautiful websites that work perfectly on phones and computers.','I build all kinds of websites from scratch. Whether you need an online store, a business site, or a custom system, I make sure it is easy to use and runs smoothly without crashing.','builtin:services/web-dev',10,1,0,'2026-10-27 13:22:18','2026-10-27 13:22:18');
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-27 15:48:50
+-- Dump completed on 2026-10-27 15:54:00

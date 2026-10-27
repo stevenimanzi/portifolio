@@ -19,12 +19,20 @@ if ($method === 'OPTIONS') {
 
 header('Content-Type: application/json; charset=utf-8');
 
-// Environment variables or fallback credentials
-// For Hostinger: you can set these or edit the fallback strings below
-$DB_HOST = getenv('DB_HOST') ?: '127.0.0.1';
-$DB_NAME = getenv('DB_NAME') ?: 'stevenimanzi_db';
-$DB_USER = getenv('DB_USER') ?: 'root';
-$DB_PASS = getenv('DB_PASS') !== false ? getenv('DB_PASS') : 'Enterin@12';
+// Automatic environment detection (Hostinger vs. local)
+$isHostinger = file_exists('/home/u100369957') || (isset($_SERVER['SERVER_NAME']) && str_contains($_SERVER['SERVER_NAME'], 'stevenimanzi'));
+
+if ($isHostinger) {
+    $DB_HOST = getenv('DB_HOST') ?: '127.0.0.1';
+    $DB_NAME = getenv('DB_NAME') ?: 'u100369957_steven_db';
+    $DB_USER = getenv('DB_USER') ?: 'u100369957_stivo_user';
+    $DB_PASS = getenv('DB_PASS') !== false ? getenv('DB_PASS') : 's1cV2jXL?';
+} else {
+    $DB_HOST = getenv('DB_HOST') ?: '127.0.0.1';
+    $DB_NAME = getenv('DB_NAME') ?: 'stevenimanzi_db';
+    $DB_USER = getenv('DB_USER') ?: 'root';
+    $DB_PASS = getenv('DB_PASS') !== false ? getenv('DB_PASS') : 'Enterin@12';
+}
 $JWT_SECRET = getenv('JWT_SECRET') ?: 'stevenimanzi_secret_key_kigali_2026';
 
 function getDb(): PDO {

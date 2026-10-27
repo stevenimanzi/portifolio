@@ -46,17 +46,8 @@ $services = [
         'image' => 'builtin:services/web-dev'
     ],
     [
-        'id' => 'ai',
-        'order_index' => 20,
-        'title' => 'Artificial Intelligence',
-        'tag' => 'Automation',
-        'summary' => 'Using smart computer tools to save you time and do the heavy lifting.',
-        'details' => 'I set up smart AI systems that can do your boring, repetitive work for you. This means you can get more done, save money, and let the computer answer customer questions automatically.',
-        'image' => 'builtin:services/ai'
-    ],
-    [
         'id' => 'seo',
-        'order_index' => 30,
+        'order_index' => 20,
         'title' => 'SEO & Digital Marketing',
         'tag' => 'Marketing',
         'summary' => 'Helping more people find your business on Google and social media.',
@@ -65,23 +56,17 @@ $services = [
     ],
     [
         'id' => 'cctv',
-        'order_index' => 40,
+        'order_index' => 30,
         'title' => 'CCTV Camera Installation',
         'tag' => 'Security',
         'summary' => 'Setting up reliable security cameras for your home or business.',
         'details' => 'Keep your property safe with modern security cameras. I handle the entire setup so you can easily watch everything live right from your phone, wherever you are.',
         'image' => 'builtin:services/cctv'
-    ],
-    [
-        'id' => 'social',
-        'order_index' => 50,
-        'title' => 'Social Media Management',
-        'tag' => 'Social Media',
-        'summary' => 'Creating great posts and managing your pages to grow your audience.',
-        'details' => "I help your business grow on platforms like Instagram, Facebook, and LinkedIn. I create the posts, schedule them, and talk to your followers so you don't have to worry about it.",
-        'image' => 'builtin:services/social'
     ]
 ];
+
+// Clean up removed services
+$pdo->exec("DELETE FROM services WHERE id IN ('ai', 'social')");
 
 $svcStmt = $pdo->prepare("
     INSERT INTO services (id, order_index, title, tag, summary, details, image, published, deleted)
