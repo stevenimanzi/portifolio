@@ -21,6 +21,7 @@ interface FramerMarqueeCarouselProps {
   sectionId?: string;
   direction?: 'left' | 'right';
   speed?: number; // pixels per second (default: 42)
+  cardLayout?: 'cover' | 'showcase';
 }
 
 export default function FramerMarqueeCarousel({
@@ -30,7 +31,8 @@ export default function FramerMarqueeCarousel({
   items,
   sectionId,
   direction = 'left',
-  speed = 42
+  speed = 42,
+  cardLayout = 'cover'
 }: FramerMarqueeCarouselProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -216,7 +218,105 @@ export default function FramerMarqueeCarousel({
               const hasExternalLink = item.link && item.link !== '#';
               const targetRoute = item.detailLink || (hasExternalLink ? item.link : undefined);
 
-              return (
+              return cardLayout === 'showcase' ? (
+                <article
+                  key={`${item.id}-${idx}`}
+                  className="framer-tc-card framer-tc-card--showcase"
+                  aria-label={item.title}
+                >
+                  {/* Dedicated Browser Showcase Frame for Project Screenshot (100% visible) */}
+                  <div className="framer-showcase-window">
+                    <div className="framer-showcase-browser-bar" aria-hidden="true">
+                      <span className="browser-dot dot-red" />
+                      <span className="browser-dot dot-yellow" />
+                      <span className="browser-dot dot-green" />
+                      <span className="browser-url">
+                        {item.link && item.link !== '#' ? item.link.replace(/^https?:\/\//, '') : item.title}
+                      </span>
+                    </div>
+
+                    <div className="framer-showcase-media-frame">
+                      <img
+                        src={item.image}
+                        alt={`${item.title} real UI screenshot`}
+                        className="framer-showcase-img"
+                        loading="lazy"
+                      />
+
+                      {hasExternalLink && (
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="framer-card-action-btn"
+                          aria-label={`Visit live website for ${item.title}`}
+                          title="Open live website"
+                          onClick={e => isDragging && e.preventDefault()}
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Project Details */}
+                  <div className="framer-showcase-body">
+                    <div className="framer-showcase-title-row">
+                      <h3 className="framer-card-title">{item.title}</h3>
+                      <span className="framer-showcase-tag">{item.tag}</span>
+                    </div>
+                    <p className="framer-card-text">{item.description}</p>
+                  </div>
+
+                  {/* Project Footer */}
+                  <div className="framer-card-footer">
+                    <div className="framer-author-group">
+                      <div className="framer-author-avatar" aria-hidden="true">
+                        {initial}
+                      </div>
+                      <div className="framer-author-meta">
+                        <span className="framer-author-name">{item.title}</span>
+                        <span className="framer-author-role">{item.tag}</span>
+                      </div>
+                    </div>
+
+                    {targetRoute && (
+                      targetRoute.startsWith('/') ? (
+                        <Link
+                          to={targetRoute}
+                          className="framer-card-cta-btn"
+                          onClick={e => isDragging && e.preventDefault()}
+                        >
+                          <span>{item.ctaText || 'Explore'}</span>
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                      ) : (
+                        <a
+                          href={targetRoute}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="framer-card-cta-btn"
+                          onClick={e => isDragging && e.preventDefault()}
+                        >
+                          <span>{item.ctaText || 'View Live'}</span>
+                          <span aria-hidden="true">→</span>
+                        </a>
+                      )
+                    )}
+                  </div>
+                </article>
+              ) : (
                 <article
                   key={`${item.id}-${idx}`}
                   className="framer-tc-card"

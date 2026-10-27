@@ -84,13 +84,14 @@ export default function Home() {
       {/* 2. Scroll timeline: one year at a time */}
       <Timeline />
 
-      {/* 3. Featured Projects - Framer TestimonialCarousel Design System */}
+      {/* 3. Featured Projects - Showcase Cards with Visible UI Screenshots */}
       {projects.length > 0 && (
         <FramerMarqueeCarousel
           sectionId="my-work"
           title={<>Selected works &amp; <strong>engineering.</strong></>}
           subtitle="A curated selection of real production systems, enterprise business solutions, and web applications built from scratch."
           direction="right"
+          cardLayout="showcase"
           items={projects.map(p => ({
             id: p.id,
             title: p.name,
