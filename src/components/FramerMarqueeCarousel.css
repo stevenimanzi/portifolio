@@ -175,25 +175,12 @@
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(255, 255, 255, 0.08) inset;
 }
 
-/* Card Top: Stars & Clean Category Tag */
+/* Card Top: Clean Category Tag (Stars & screen count removed) */
 .framer-card-top-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 1.25rem;
-}
-
-.framer-card-stars {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.25));
-}
-
-.framer-card-star {
-  width: 15px;
-  height: 15px;
-  color: #f59e0b;
 }
 
 .framer-card-pill {
@@ -305,6 +292,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: auto;
@@ -314,6 +302,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .framer-author-avatar {
@@ -335,6 +325,8 @@
 .framer-author-meta {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .framer-author-name {
@@ -342,23 +334,35 @@
   font-weight: 700;
   color: #ffffff;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .framer-author-role {
   font-size: 0.75rem;
   color: #8e8e93;
   line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .framer-card-cta-btn {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: #ffffff;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.framer-card-cta-btn span {
+  white-space: nowrap;
 }
 
 .framer-card-cta-btn:hover {
