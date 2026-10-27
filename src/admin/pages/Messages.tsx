@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../adminFirebase';
+import { deleteMessage, updateMessageStatus } from '../adminFirebase';
 import { useAdminData, type MessageDoc } from '../AdminData';
 import { formatWhen } from '../analyticsData';
 import { Card, EmptyState, Notice, PageHeader, useToast } from '../ui';
@@ -28,16 +27,16 @@ export default function Messages() {
 
   const openMessage = (m: MessageDoc) => {
     setOpenId(prev => (prev === m.id ? null : m.id));
-    if (!m.read) void updateDoc(doc(db, 'messages', m.id), { read: true });
+    if (!m.read) void updateMessageStatus(m.id, true);
   };
 
   const toggleRead = (m: MessageDoc) =>
-    updateDoc(doc(db, 'messages', m.id), { read: !m.read }).catch(() => toast('Could not update the message.', 'error'));
+    updateMessageStatus(m.id, !m.read).catch(() => toast('Could not update the message.', 'error'));
 
   const remove = async (m: MessageDoc) => {
     if (!window.confirm(`Delete the message from ${m.name}? This cannot be undone.`)) return;
     try {
-      await deleteDoc(doc(db, 'messages', m.id));
+      await deleteMessage(m.id);
       toast('Message deleted.');
     } catch {
       toast('Could not delete the message.', 'error');

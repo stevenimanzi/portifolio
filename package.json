@@ -5,10 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "api": "php -S localhost:8000 -t public",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "seo": "node scripts/sync-seo.mjs",
+    "db:seed": "php database/seed.php",
+    "db:export": "php scripts/export-db.php",
     "ship": "npm run seo && npm run build && firebase deploy"
   },
   "dependencies": {

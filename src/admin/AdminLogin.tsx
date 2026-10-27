@@ -73,8 +73,33 @@ export default function AdminLogin() {
     setBusy(true);
     setError('');
     setInfo('');
+
+    const trimmedEmail = email.trim();
+
+    // 1. First attempt MySQL backend authentication
     try {
-      const result = await signInWithEmailAndPassword(auth, email.trim(), password);
+      const res = await fetch('/api/auth.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail, password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.token) {
+          localStorage.setItem('sm_admin_token', data.token);
+          localStorage.setItem('sm_admin_user', JSON.stringify(data.user));
+          markAsOwner();
+          navigate('/admin', { replace: true });
+          return;
+        }
+      }
+    } catch {
+      // Backend API offline or fetch failed: fall through to Firebase
+    }
+
+    // 2. Fall back to Firebase Authentication
+    try {
+      const result = await signInWithEmailAndPassword(auth, trimmedEmail, password);
       await finish(result.user);
     } catch (err) {
       fail(err);
@@ -138,59 +163,101 @@ export default function AdminLogin() {
 
       <main className="adm-login-main">
         <form className="adm-login-card" onSubmit={handleSubmit} noValidate>
-          <h1>Welcome back</h1>
-          <p className="adm-muted">Sign in to manage your website. Only the site owner can enter.</p>
+          <h1>Sign in</h1>
+          <p className="adm-login-sub">Welcome back. Enter your details to open the dashboard.</p>
+
+          {error && (
+            <div className="adm-login-error" role="alert">
+              {error}
+            </div>
+          )}
+
+          {info && (
+            <div className="adm-login-info" role="status">
+              {info}
+            </div>
+          )}
 
           <label className="adm-field">
-            <span>Email</span>
+            <span>Email address</span>
             <input
               type="email"
               autoComplete="username"
+              required
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
-              required
+              disabled={busy}
             />
           </label>
 
           <label className="adm-field">
-            <span>Password</span>
-            <div className="adm-passwrap">
+            <span className="adm-field-row">
+              <span>Password</span>
+              <button type="button" className="adm-text-link" onClick={handleReset} tabIndex={-1}>
+                Forgot password?
+              </button>
+            </span>
+            <span className="adm-pass-wrap">
               <input
                 type={show ? 'text' : 'password'}
                 autoComplete="current-password"
+                required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                required
+                placeholder="••••••••"
+                disabled={busy}
               />
-              <button type="button" onClick={() => setShow(s => !s)} aria-label={show ? 'Hide password' : 'Show password'}>
-                {show ? <EyeSlashIcon /> : <EyeIcon />}
+              <button
+                type="button"
+                className="adm-icon-btn adm-pass-toggle"
+                onClick={() => setShow(s => !s)}
+                aria-label={show ? 'Hide password' : 'Show password'}
+                tabIndex={-1}
+              >
+                {show ? <EyeSlashIcon aria-hidden="true" /> : <EyeIcon aria-hidden="true" />}
               </button>
-            </div>
+            </span>
           </label>
 
-          <button type="button" className="adm-textbtn" onClick={handleReset} disabled={busy}>Forgot password?</button>
-
-          {error && <div className="adm-error" role="alert">{error}</div>}
-          {info && <div className="adm-success" role="status">{info}</div>}
-
-          <button type="submit" className="btn-neon adm-full" disabled={busy || !email || !password}>
-            {busy ? 'Please wait…' : 'Sign in'}
+          <button type="submit" className="adm-btn adm-btn-primary adm-btn-block" disabled={busy}>
+            {busy ? 'Signing in…' : 'Sign in'}
           </button>
 
-          <div className="adm-divider"><span>or</span></div>
+          <div className="adm-login-sep" aria-hidden="true">
+            <span>or</span>
+          </div>
 
-          <button type="button" className="btn-neon-outline adm-full" onClick={handleGoogle} disabled={busy}>
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-              <path fill="#4285F4" d="M22.5 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.33z" />
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
-              <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z" />
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z" />
+          <button
+            type="button"
+            className="adm-btn adm-btn-secondary adm-btn-block"
+            onClick={handleGoogle}
+            disabled={busy}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="adm-google-icon">
+              <path
+                fill="#EA4335"
+                d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.4l3.7 2.9C6.5 7.4 9 5 12 5z"
+              />
+              <path
+                fill="#4285F4"
+                d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.6 14.7c-.2-.7-.4-1.5-.4-2.7s.1-2 .4-2.7L1.9 6.4C.7 8.8 0 10.3 0 12s.7 3.2 1.9 5.6l3.7-2.9z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.3L1.9 16C3.7 19.8 7.5 23 12 23z"
+              />
             </svg>
-            Continue with Google
+            Sign in with Google
           </button>
 
-          <Link to="/" className="adm-back">← Back to website</Link>
+          <p className="adm-login-foot">
+            <Link to="/">Back to the website</Link>
+          </p>
         </form>
       </main>
     </div>

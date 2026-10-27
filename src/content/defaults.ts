@@ -1,10 +1,8 @@
 import type { ProjectItem, SeoSettings, ServiceItem, SiteSettings, TestimonialItem } from './model';
 
 const srvWebDev = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800';
-const srvAi = 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=800';
 const srvSeo = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800';
 const srvCctv = 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=800';
-const srvSocial = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800';
 
 /* ---------- Images shipped with the site ----------
    Content stores image "tokens" like `builtin:projects/bms/bms_1.png`, so they keep working after a
@@ -17,10 +15,8 @@ const projectFiles = import.meta.glob<string>('../assets/projects/*/*.png', {
 
 export const assetMap: Record<string, string> = {
   'services/web-dev': srvWebDev,
-  'services/ai': srvAi,
   'services/seo': srvSeo,
-  'services/cctv': srvCctv,
-  'services/social': srvSocial
+  'services/cctv': srvCctv
 };
 Object.entries(projectFiles).forEach(([path, url]) => {
   assetMap[path.replace('../assets/', '')] = url;
@@ -42,7 +38,9 @@ const base = { source: 'builtin' as const, published: true, deleted: false };
 
 export const defaultServices: ServiceItem[] = [
   {
-    ...base, id: 'web-dev', order: 10,
+    ...base,
+    id: 'web-dev',
+    order: 10,
     title: 'Web & App Development',
     tag: 'Development',
     summary: 'Fast and beautiful websites that work perfectly on phones and computers.',
@@ -50,15 +48,9 @@ export const defaultServices: ServiceItem[] = [
     image: 'builtin:services/web-dev'
   },
   {
-    ...base, id: 'ai', order: 20,
-    title: 'Artificial Intelligence',
-    tag: 'Automation',
-    summary: 'Using smart computer tools to save you time and do the heavy lifting.',
-    details: 'I set up smart AI systems that can do your boring, repetitive work for you. This means you can get more done, save money, and let the computer answer customer questions automatically.',
-    image: 'builtin:services/ai'
-  },
-  {
-    ...base, id: 'seo', order: 30,
+    ...base,
+    id: 'seo',
+    order: 20,
     title: 'SEO & Digital Marketing',
     tag: 'Marketing',
     summary: 'Helping more people find your business on Google and social media.',
@@ -66,20 +58,14 @@ export const defaultServices: ServiceItem[] = [
     image: 'builtin:services/seo'
   },
   {
-    ...base, id: 'cctv', order: 40,
+    ...base,
+    id: 'cctv',
+    order: 30,
     title: 'CCTV Camera Installation',
     tag: 'Security',
     summary: 'Setting up reliable security cameras for your home or business.',
     details: 'Keep your property safe with modern security cameras. I handle the entire setup so you can easily watch everything live right from your phone, wherever you are.',
     image: 'builtin:services/cctv'
-  },
-  {
-    ...base, id: 'social', order: 50,
-    title: 'Social Media Management',
-    tag: 'Social Media',
-    summary: 'Creating great posts and managing your pages to grow your audience.',
-    details: "I help your business grow on platforms like Instagram, Facebook, and LinkedIn. I create the posts, schedule them, and talk to your followers so you don't have to worry about it.",
-    image: 'builtin:services/social'
   }
 ];
 
@@ -89,7 +75,9 @@ export const defaultProjects: ProjectItem[] = [
   { ...base, id: 'e_commerce', order: 30, name: 'E-Commerce Market', type: 'E-Commerce', description: 'A popular online market in Rwanda where people can buy and sell things like electronics and food.', link: 'https://icyerekezodigital.online', images: projectTokens('e_commerce') },
   { ...base, id: 'noguchi', order: 40, name: 'Noguchi', type: 'Web App', description: 'A beautiful and easy-to-use website with a clean and modern design.', link: '#', images: projectTokens('noguchi') },
   { ...base, id: 'oms', order: 50, name: 'OMS', type: 'Business System', description: 'A system that helps factories easily manage their orders, machines, and daily work.', link: 'https://icyerekezooms.com', images: projectTokens('oms') },
-  { ...base, id: 'thelight', order: 60, name: 'The Light', type: 'Web App', description: 'A platform where people can find real jobs, scholarships, and career advice in Africa.', link: 'https://thelightofengineer.com', images: projectTokens('thelight') }
+  { ...base, id: 'thelight', order: 60, name: 'The Light', type: 'Web App', description: 'A platform where people can find real jobs, scholarships, and career advice in Africa.', link: 'https://thelightofengineer.com', images: projectTokens('thelight') },
+  { ...base, id: 'star_news_africa', order: 70, name: 'Star News Africa', type: 'Newsletter Platform', description: 'A leading digital news publication and newsletter platform delivering authentic, independent news and stories across Africa.', link: 'https://starnewsafrica.com', images: projectTokens('Star_News_Africa') },
+  { ...base, id: 'clear_finance', order: 80, name: 'Clear Finance', type: 'Financial Management System', description: 'A personal finance management system that tracks income, expenses, and budgets with real-time reports and smart decision support.', link: 'https://clearfinance.web.app/', images: projectTokens('Clear_Finance') }
 ];
 
 const t = (id: string, order: number, name: string, role: string, text: string): TestimonialItem =>
@@ -119,16 +107,16 @@ export const defaultSite: SiteSettings = {
   linkedin: 'https://www.linkedin.com/in/steven-imanzi/',
   x: 'https://x.com/StivenImanzi',
   instagram: 'https://www.instagram.com/stevenimanzi/',
-  footerText: 'Expert Web & Software Developer specializing in modern web applications, SEO, and AI automation.',
+  footerText: 'Expert Web & Software Developer specializing in modern web applications, SEO, and CCTV installation.',
   yearsStart: 2024
 };
 
 export const defaultSeo: SeoSettings = {
   siteName: 'Steven Imanzi',
-  description: 'Steven Imanzi is a leading Web and Software Developer based in Kigali, Rwanda, offering expert services in full-stack web development, SEO, AI automation, and CCTV installation.',
-  keywords: 'Software Developer Kigali, Web Developer Rwanda, IT Services Rwanda, Steven Imanzi, AI Automation, CCTV Installation Rwanda, SEO Services Kigali',
+  description: 'Steven Imanzi is a leading Web and Software Developer based in Kigali, Rwanda, offering expert services in full-stack web development, SEO, and CCTV installation.',
+  keywords: 'Software Developer Kigali, Web Developer Rwanda, IT Services Rwanda, Steven Imanzi, CCTV Installation Rwanda, SEO Services Kigali',
   author: 'Steven Imanzi',
-  canonicalUrl: 'https://stevenimanzi-46e0f.web.app',
+  canonicalUrl: 'https://stevenimanzi.com',
   ogImage: '/steven_imanzi.png',
   twitterHandle: '@StivenImanzi',
   robotsIndex: true,
@@ -139,7 +127,7 @@ export const defaultSeo: SeoSettings = {
   pages: {
     home: {
       title: 'Steven Imanzi | Web & Software Developer in Kigali, Rwanda',
-      description: 'Leading Web and Software Developer in Kigali, Rwanda offering full-stack solutions, SEO, and AI automation.',
+      description: 'Leading Web and Software Developer in Kigali, Rwanda offering full-stack solutions, SEO, and CCTV installation.',
       image: ''
     },
     skills: {
@@ -148,8 +136,8 @@ export const defaultSeo: SeoSettings = {
       image: ''
     },
     services: {
-      title: 'Web, SEO, AI & CCTV Services in Rwanda | Steven Imanzi',
-      description: 'Simple, reliable digital services for businesses in Rwanda: websites and apps, AI automation, SEO and marketing, CCTV installation and social media management.',
+      title: 'Web, SEO & CCTV Services in Rwanda | Steven Imanzi',
+      description: 'Simple, reliable digital services for businesses in Rwanda: websites and apps, SEO and marketing, and CCTV camera installation.',
       image: ''
     },
     projects: {

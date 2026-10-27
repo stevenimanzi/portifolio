@@ -1,7 +1,6 @@
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore/lite';
 import { app } from './firebase';
 
-// Firestore "lite" is a much smaller build: enough to add documents from public pages.
 const db = getFirestore(app);
 
 export interface ContactPayload {
@@ -11,16 +10,36 @@ export interface ContactPayload {
   message: string;
 }
 
-/** Saves a contact-form message. Throws if it could not be stored. */
+/** Saves a contact-form message to MySQL API (falls back to Firestore). */
 export async function submitMessage(payload: ContactPayload): Promise<void> {
-  await addDoc(collection(db, 'messages'), {
+  const cleanPayload = {
     name: payload.name.trim(),
     email: payload.email.trim(),
     subject: payload.subject.trim(),
-    message: payload.message.trim(),
-    createdAt: serverTimestamp(),
-    read: false
-  });
+    message: payload.message.trim()
+  };
+
+  try {
+    const res = await fetch('/api/messages.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cleanPayload)
+    });
+    if (res.ok) return;
+    const data = await res.json().catch(() => null);
+    if (data?.error) throw new Error(data.error);
+  } catch (err: unknown) {
+    // If it's a validation error from API, throw immediately
+    if (err instanceof Error && !err.message.includes('fetch')) {
+      throw err;
+    }
+    // Fall back to Firestore lite if API was unreachable
+    await addDoc(collection(db, 'messages'), {
+      ...cleanPayload,
+      createdAt: serverTimestamp(),
+      read: false
+    });
+  }
 }
 
 const safeStorage = {
@@ -60,7 +79,6 @@ function getPageViewLogger() {
   return analyticsPromise;
 }
 
-
 interface Geo {
   country: string;
   city: string;
@@ -99,7 +117,6 @@ async function lookupGeo(): Promise<Geo> {
       country: primary.country_code.slice(0, 2).toUpperCase(),
       city: typeof primary.city === 'string' ? primary.city.slice(0, 80) : ''
     };
-    // one decimal place is roughly 10 km: enough for a map, not precise enough to identify anyone
     if (typeof primary.latitude === 'number' && typeof primary.longitude === 'number') {
       geo.lat = Math.round(primary.latitude * 10) / 10;
       geo.lng = Math.round(primary.longitude * 10) / 10;
@@ -114,12 +131,12 @@ async function lookupGeo(): Promise<Geo> {
   return geo;
 }
 
-/** Records one page view (own visit log for the admin dashboard + GA4). Never throws. */
+/** Records one page view to MySQL API + GA4. Never throws. */
 export async function trackVisit(path: string): Promise<void> {
   try {
-    if (import.meta.env.DEV) return; // do not pollute real data while developing
+    if (import.meta.env.DEV) return;
     if (safeStorage.get('local', 'sm_owner')) return;
-    if (safeStorage.get('session', `sm_seen:${path}`)) return; // once per page per session
+    if (safeStorage.get('session', `sm_seen:${path}`)) return;
     safeStorage.set('session', `sm_seen:${path}`, '1');
 
     const returning = !!safeStorage.get('local', 'sm_vid');
@@ -130,15 +147,14 @@ export async function trackVisit(path: string): Promise<void> {
       const host = document.referrer ? new URL(document.referrer).hostname : '';
       referrer = host && host !== window.location.hostname ? host.slice(0, 200) : '';
     } catch {
-      /* ignore malformed referrer */
+      /* ignore */
     }
 
     const geo = await lookupGeo();
-
     const width = window.innerWidth;
     const device = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
 
-    await addDoc(collection(db, 'visits'), {
+    const visitPayload = {
       path: path.slice(0, 200),
       referrer,
       newVisitor: !returning,
@@ -146,8 +162,21 @@ export async function trackVisit(path: string): Promise<void> {
       lang: (navigator.language || '').slice(0, 20),
       country: geo.country,
       city: geo.city,
-      ...(geo.lat !== undefined && geo.lng !== undefined ? { lat: geo.lat, lng: geo.lng } : {}),
-      createdAt: serverTimestamp()
+      lat: geo.lat,
+      lng: geo.lng
+    };
+
+    // Send to MySQL backend
+    fetch('/api/visits.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(visitPayload)
+    }).catch(() => {
+      // Fallback to Firestore lite if API server is offline
+      addDoc(collection(db, 'visits'), {
+        ...visitPayload,
+        createdAt: serverTimestamp()
+      }).catch(() => {});
     });
 
     const log = await getPageViewLogger();

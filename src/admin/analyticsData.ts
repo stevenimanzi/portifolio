@@ -9,7 +9,7 @@ import {
   Timestamp,
   type Query
 } from 'firebase/firestore';
-import { db } from './adminFirebase';
+import { db, getAdminToken } from './adminFirebase';
 import { PAGE_KEYS, PAGE_LABELS, PAGE_PATHS } from '../content/model';
 
 export interface VisitDoc {
@@ -23,7 +23,7 @@ export interface VisitDoc {
   city?: string;
   lat?: number;
   lng?: number;
-  createdAt: Timestamp | null;
+  createdAt: Timestamp | { toDate: () => Date } | null;
 }
 
 export interface VisitStats {
@@ -39,8 +39,7 @@ export interface VisitStats {
 }
 
 export async function loadVisitStats(days: 7 | 30): Promise<VisitStats> {
-  const visits = collection(db, 'visits');
-  const count = async (q: Query) => (await getCountFromServer(q)).data().count;
+  const token = getAdminToken();
 
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
@@ -57,6 +56,71 @@ export async function loadVisitStats(days: 7 | 30): Promise<VisitStats> {
         : start.toLocaleDateString([], { day: 'numeric', month: 'short' })
     };
   });
+
+  if (token) {
+    const res = await fetch('/api/visits.php', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Could not load visits from MySQL API');
+    const data = await res.json();
+    const rawVisits: Array<Record<string, unknown>> = data.visits ?? [];
+    const sample: VisitDoc[] = rawVisits.map(v => ({
+      id: String(v.id),
+      path: String(v.path ?? ''),
+      referrer: String(v.referrer ?? ''),
+      device: String(v.device ?? 'desktop'),
+      lang: String(v.lang ?? ''),
+      newVisitor: Boolean(v.newVisitor),
+      country: v.country ? String(v.country) : undefined,
+      city: v.city ? String(v.city) : undefined,
+      lat: typeof v.lat === 'number' ? v.lat : undefined,
+      lng: typeof v.lng === 'number' ? v.lng : undefined,
+      createdAt: v.createdAt ? { toDate: () => new Date(String(v.createdAt)) } : null
+    }));
+
+    const now = Date.now();
+    const halfHourAgo = now - 30 * 60 * 1000;
+    let liveNow = 0;
+
+    const perDayCounts = new Array(days).fill(0);
+    const perPageCounts: Record<string, number> = {};
+
+    sample.forEach(v => {
+      const visitTime = v.createdAt?.toDate().getTime() ?? 0;
+      if (visitTime >= halfHourAgo) liveNow++;
+
+      // Day bucket
+      range.forEach((d, idx) => {
+        if (visitTime >= d.start.getTime() && visitTime < d.end.getTime()) {
+          perDayCounts[idx]++;
+        }
+      });
+
+      // Page bucket
+      perPageCounts[v.path] = (perPageCounts[v.path] || 0) + 1;
+    });
+
+    const perDay = range.map((d, i) => ({ label: d.label, date: d.start, count: perDayCounts[i] }));
+    const total = data.summary?.totalVisits ?? sample.length;
+    const newVisitors = data.summary?.uniqueVisitors ?? sample.filter(v => v.newVisitor).length;
+
+    return {
+      total,
+      newVisitors,
+      today: perDay[perDay.length - 1]?.count ?? 0,
+      week: perDay.slice(-7).reduce((sum, d) => sum + d.count, 0),
+      rangeTotal: perDay.reduce((sum, d) => sum + d.count, 0),
+      liveNow,
+      perDay,
+      perPage: PAGE_KEYS.map(k => ({ label: PAGE_LABELS[k], path: PAGE_PATHS[k], count: perPageCounts[PAGE_PATHS[k]] || 0 }))
+        .sort((a, b) => b.count - a.count),
+      sample
+    };
+  }
+
+  // Firestore fallback
+  const visits = collection(db, 'visits');
+  const count = async (q: Query) => (await getCountFromServer(q)).data().count;
 
   const halfHourAgo = Timestamp.fromDate(new Date(Date.now() - 30 * 60 * 1000));
   const [total, newVisitors, perDayCounts, perPageCounts, sampleSnap, liveNow] = await Promise.all([
@@ -117,5 +181,6 @@ export function tally(values: string[]): [string, number][] {
   return [...counts.entries()].sort((a, b) => b[1] - a[1]);
 }
 
-export const formatWhen = (ts: Timestamp | null) =>
+export const formatWhen = (ts: Timestamp | { toDate: () => Date } | null) =>
   ts ? ts.toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'Just now';
+
