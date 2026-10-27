@@ -1,42 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import './Home.css';
 import Timeline from '../components/Timeline';
 import StickyServicesSection from '../components/StickyServicesSection';
+import MyWorkCarousel from '../components/MyWorkCarousel';
 import { useContent } from '../content/ContentContext';
-
-
-
-// Horizontal swipe on touch screens moves a carousel by one card.
-function swipeHandlers(move: (direction: 1 | -1) => void) {
-  let startX: number | null = null;
-  return {
-    onTouchStart: (e: React.TouchEvent) => { startX = e.touches[0].clientX; },
-    onTouchEnd: (e: React.TouchEvent) => {
-      if (startX === null) return;
-      const dx = e.changedTouches[0].clientX - startX;
-      startX = null;
-      if (Math.abs(dx) > 40) move(dx < 0 ? 1 : -1);
-    }
-  };
-}
 
 export default function Home() {
   const { services: servicesData, projects, testimonials, site } = useContent();
-  const featuredProjects = projects.map(p => ({
-    id: p.id,
-    name: p.name,
-    image: p.images[0] ?? '',
-    type: p.type,
-    desc: p.description,
-    link: p.link
-  }));
 
-  const [projectRaw, setProjectCarouselIndex] = useState(2);
-  const [activeProjectCardId, setActiveProjectCardId] = useState<string | null>(null);
   const [testimonialRaw, setActiveTestimonialIndex] = useState(0);
-  // Items can be added / hidden from the dashboard, so keep every index inside the list.
-  const projectCarouselIndex = Math.min(projectRaw, Math.max(0, featuredProjects.length - 1));
   const activeTestimonialIndex = Math.min(testimonialRaw, Math.max(0, testimonials.length - 1));
 
   const getCircularOffset = (index: number, currentIndex: number, totalLength: number) => {
@@ -54,17 +26,6 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
-
-  // Autoplay for Projects Carousel
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    if (activeProjectCardId === null) {
-      interval = setInterval(() => {
-        setProjectCarouselIndex(prev => (prev >= featuredProjects.length - 1 ? 0 : prev + 1));
-      }, 10000);
-    }
-    return () => clearInterval(interval);
-  }, [activeProjectCardId, featuredProjects.length]);
 
   const startYear = site.yearsStart;
   const currentYear = new Date().getFullYear();
@@ -109,121 +70,9 @@ export default function Home() {
       {/* 2. Scroll timeline: one year at a time */}
       <Timeline />
 
-      {/* 3. Featured Projects Arc Carousel */}
-      {featuredProjects.length > 0 && (
-      <section className="projects-section section">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="gradient-text">My Work</h2>
-            <p style={{color: '#aaa', marginTop: '1rem'}}>A selection of recent projects I have built.</p>
-          </div>
-          
-          <div
-            className="arc-carousel-container cf"
-            style={{marginTop: '4rem'}}
-            {...swipeHandlers(dir => setProjectCarouselIndex(i => Math.min(featuredProjects.length - 1, Math.max(0, i + dir))))}
-          >
-            {featuredProjects.map((project, index) => {
-              const offset = getCircularOffset(index, projectCarouselIndex, featuredProjects.length);
-              const isExpanded = activeProjectCardId === project.id;
-              
-              const distance = Math.abs(offset);
-
-              return (
-                <div 
-                  key={project.id}
-                  className={`arc-carousel-card cf-card project-arc-card ${isExpanded ? 'expanded' : ''} ${offset === 0 ? 'active' : ''}`}
-                  style={{
-                    '--o': offset,
-                    '--ao': distance,
-                    '--s': offset === 0 ? 1 : 1 - distance * 0.05,
-                    zIndex: offset === 0 ? 20 : 10 - distance,
-                    padding: 0,
-                    overflow: 'hidden'
-                  } as React.CSSProperties}
-                  onClick={() => {
-                    if (offset !== 0) {
-                      setProjectCarouselIndex(index);
-                    } else {
-                      setActiveProjectCardId(activeProjectCardId === project.id ? null : project.id);
-                    }
-                  }}
-                >
-                  <div className="card-content-wrapper" style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
-                    <div className="project-expanded-image" style={{width: '100%', height: isExpanded ? '200px' : '160px', flexShrink: 0, borderBottom: '1px solid rgba(255,255,255,0.1)'}}>
-                      <img src={project.image} alt={project.name} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
-                    </div>
-                    
-                    <div style={{padding: isExpanded ? '1.5rem 2rem' : '1.5rem', flex: 1, display: 'flex', flexDirection: 'column'}}>
-                      <h3 style={{fontSize: isExpanded ? '1.5rem' : '1.3rem', marginBottom: '0.4rem', color: '#fff'}}>{project.name}</h3>
-                      <p className="summary" style={{color: '#3b82f6', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em', marginBottom: '1rem'}}>{project.type}</p>
-                      
-                      <p style={{fontSize: '0.9rem', color: '#ccc', display: isExpanded ? 'block' : '-webkit-box', WebkitLineClamp: isExpanded ? 'unset' : 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{project.desc}</p>
-                      
-                      <div className="details-content" style={{flex: 1}}>
-                        {isExpanded && (
-                          <div style={{display: 'flex', gap: '1rem', marginTop: '1.5rem'}}>
-                            {project.link !== '#' && (
-                              <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{textDecoration: 'none', padding: '0.6rem 1.2rem'}}>
-                                View Live
-                              </a>
-                            )}
-                            <button 
-                              className="btn btn-primary close-btn" 
-                              style={{background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', padding: '0.6rem 1.2rem', marginTop: 0}}
-                              onClick={(e) => { 
-                                e.stopPropagation(); 
-                                setActiveProjectCardId(null); 
-                              }}
-                            >
-                              Close
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                      
-                      {!isExpanded && offset === 0 && (
-                        <Link to={`/projects?project=${project.id}`} className="read-more-hint" style={{marginTop: 'auto', textDecoration: 'none', display: 'block'}} onClick={(e) => e.stopPropagation()}>
-                          Click to view details →
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          
-          <div className="carousel-controls cf-controls">
-            <button 
-              className="carousel-btn prev-btn" 
-              onClick={() => setProjectCarouselIndex(Math.max(0, projectCarouselIndex - 1))}
-              disabled={projectCarouselIndex === 0}
-            >
-              ← Prev
-            </button>
-            <div className="carousel-indicators">
-              {featuredProjects.map((_, index) => (
-                <span 
-                  key={index} 
-                  className={`indicator-dot ${index === projectCarouselIndex ? 'active' : ''}`}
-                  onClick={() => {
-                    setProjectCarouselIndex(index);
-                    setActiveProjectCardId(null);
-                  }}
-                />
-              ))}
-            </div>
-            <button 
-              className="carousel-btn next-btn" 
-              onClick={() => setProjectCarouselIndex(Math.min(featuredProjects.length - 1, projectCarouselIndex + 1))}
-              disabled={projectCarouselIndex === featuredProjects.length - 1}
-            >
-              Next →
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* 3. Featured Projects - Framer TestimonialCarousel Design System */}
+      {projects.length > 0 && (
+        <MyWorkCarousel projects={projects} />
       )}
 
       {/* 4. Testimonials Section */}
