@@ -170,15 +170,17 @@
 
 @media (max-width: 900px) {
   .syntax-hero {
-    height: 100svh;
-    min-height: 560px;
+    height: auto;
+    min-height: auto;
+    padding-bottom: 2.5rem;
   }
 
   .syntax-content {
-    padding: 1.25rem 1.25rem 1.75rem;
+    height: auto;
+    padding: 1.25rem 1.25rem 0.5rem;
     padding-top: 85px;
-    gap: 0.85rem;
-    justify-content: flex-end;
+    gap: 1.5rem;
+    justify-content: flex-start;
   }
   
   .syntax-top {
@@ -193,8 +195,8 @@
   
   .syntax-quote-container {
     align-self: flex-start;
-    margin-top: auto;
-    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
     max-width: 320px;
   }
 
@@ -206,7 +208,7 @@
   .syntax-bottom {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.85rem;
+    gap: 1.25rem;
     padding-bottom: 0;
   }
 
@@ -221,7 +223,7 @@
     bottom: 0;
     transform: none;
     text-align: left;
-    margin-top: 0.25rem;
+    margin-top: 0;
   }
   
   .syntax-huge-text {
