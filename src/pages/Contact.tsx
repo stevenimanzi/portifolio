@@ -83,14 +83,12 @@ export default function Contact() {
     e.preventDefault();
     if (isSubmitting) return;
 
-    // Bots fill hidden fields: pretend it worked and drop the message.
     if (website) {
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
       return;
     }
 
-    // Gentle rate limit: one message every 30 seconds per browser.
     try {
       const last = Number(localStorage.getItem('sm_last_msg') || 0);
       if (Date.now() - last < 30_000) {
@@ -128,7 +126,7 @@ export default function Contact() {
       />
 
       <div className="page-body contact-container">
-        {/* Contact Info Section */}
+        
         <div className="contact-info-section reveal" style={{ '--delay': '0.1s' } as React.CSSProperties}>
           {contactDetails.map(({ label, value, href, icon: Icon }) => {
             const body = (
@@ -169,7 +167,7 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Contact Form Section */}
+        
         <div className="contact-form-section reveal" style={{ '--delay': '0.2s' } as React.CSSProperties}>
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="contact-hp" aria-hidden="true">

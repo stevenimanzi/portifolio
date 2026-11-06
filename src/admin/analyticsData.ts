@@ -89,14 +89,12 @@ export async function loadVisitStats(days: 7 | 30): Promise<VisitStats> {
       const visitTime = v.createdAt?.toDate().getTime() ?? 0;
       if (visitTime >= halfHourAgo) liveNow++;
 
-      // Day bucket
       range.forEach((d, idx) => {
         if (visitTime >= d.start.getTime() && visitTime < d.end.getTime()) {
           perDayCounts[idx]++;
         }
       });
 
-      // Page bucket
       perPageCounts[v.path] = (perPageCounts[v.path] || 0) + 1;
     });
 

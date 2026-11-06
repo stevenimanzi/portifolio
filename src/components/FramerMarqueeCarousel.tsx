@@ -41,7 +41,6 @@ export default function FramerMarqueeCarousel({
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Position and physics refs (60fps continuous animation without triggering React re-renders)
   const posRef = useRef({
     x: 0,
     lastTime: 0,
@@ -55,10 +54,8 @@ export default function FramerMarqueeCarousel({
   });
 
   const total = items.length;
-  // Double buffer for seamless infinite loop (100% like Framer InfiniteTrack)
   const duplicated = [...items, ...items];
 
-  // Measure one set width
   const measureSetWidth = useCallback(() => {
     if (!trackRef.current) return;
     const cards = trackRef.current.children;
@@ -78,7 +75,6 @@ export default function FramerMarqueeCarousel({
     return () => window.removeEventListener('resize', measureSetWidth);
   }, [measureSetWidth]);
 
-  // Infinite Animation Loop
   useEffect(() => {
     let active = true;
 
@@ -91,19 +87,16 @@ export default function FramerMarqueeCarousel({
 
       if (p.setWidth > 0) {
         if (!p.isPointerDown) {
-          // Physics decay after drag release
           if (Math.abs(p.velocity) > 0.05) {
             p.x += p.velocity * (dt / 16.67);
             p.velocity *= Math.pow(0.92, dt / 16.67);
           } else {
             p.velocity = 0;
-            // Base continuous marquee speed with hover deceleration
             const speedMultiplier = isHovered ? 0.2 : 1;
             const step = (speed * (dt / 1000)) * speedMultiplier;
             p.x += direction === 'left' ? -step : step;
           }
 
-          // Seamless loop wrap
           const setW = p.setWidth;
           p.x = ((p.x % setW) - setW) % setW;
         }
@@ -127,7 +120,6 @@ export default function FramerMarqueeCarousel({
     };
   }, [direction, speed, isHovered]);
 
-  // Pointer drag events with velocity tracking
   const onPointerDown = (e: React.PointerEvent) => {
     const p = posRef.current;
     p.isPointerDown = true;
@@ -167,7 +159,6 @@ export default function FramerMarqueeCarousel({
     setIsDragging(false);
   };
 
-  // Manual smooth button navigation
   const navigateBy = (delta: number) => {
     const p = posRef.current;
     p.velocity = delta;
@@ -197,7 +188,7 @@ export default function FramerMarqueeCarousel({
           </div>
         </div>
 
-        {/* 2. Marquee Stage */}
+        
         <div
           ref={stageRef}
           className="framer-tc-stage"
@@ -211,7 +202,7 @@ export default function FramerMarqueeCarousel({
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
         >
-          {/* Infinite Translation Track */}
+          
           <div ref={trackRef} className="framer-tc-track">
             {duplicated.map((item, idx) => {
               const initial = item.title.charAt(0).toUpperCase();
@@ -270,13 +261,13 @@ export default function FramerMarqueeCarousel({
                     </div>
                   </div>
 
-                  {/* Project Details */}
+                  
                   <div className="framer-showcase-body">
                     <h3 className="framer-card-title">{item.title}</h3>
                     <p className="framer-card-text">{item.description}</p>
                   </div>
 
-                  {/* Project Footer */}
+                  
                   <div className="framer-card-footer">
                     <div className="framer-author-group">
                       <div className="framer-author-avatar" aria-hidden="true">
@@ -328,7 +319,7 @@ export default function FramerMarqueeCarousel({
                   />
                   <div className="framer-card-bg-scrim" />
 
-                  {/* External Live Link Icon (Top Right) */}
+                  
                   {hasExternalLink && (
                     <a
                       href={item.link}
@@ -354,7 +345,7 @@ export default function FramerMarqueeCarousel({
                     </a>
                   )}
 
-                  {/* Card Content Layer */}
+                  
                   <div className="framer-card-content">
                     <div className="framer-card-body">
                       <h3 className="framer-card-title">{item.title}</h3>

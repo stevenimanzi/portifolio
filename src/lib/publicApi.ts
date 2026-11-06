@@ -29,11 +29,9 @@ export async function submitMessage(payload: ContactPayload): Promise<void> {
     const data = await res.json().catch(() => null);
     if (data?.error) throw new Error(data.error);
   } catch (err: unknown) {
-    // If it's a validation error from API, throw immediately
     if (err instanceof Error && !err.message.includes('fetch')) {
       throw err;
     }
-    // Fall back to Firestore lite if API was unreachable
     await addDoc(collection(db, 'messages'), {
       ...cleanPayload,
       createdAt: serverTimestamp(),
@@ -66,7 +64,6 @@ export function markAsOwner() {
 
 let analyticsPromise: Promise<((path: string) => void) | null> | null = null;
 
-// Google Analytics (GA4) through Firebase: countries, devices, live users. Loaded lazily.
 function getPageViewLogger() {
   analyticsPromise ??= import('firebase/analytics')
     .then(async ({ isSupported, initializeAnalytics, logEvent }) => {
@@ -166,7 +163,6 @@ export async function trackVisit(path: string): Promise<void> {
       lng: geo.lng
     };
 
-    // Send to MySQL backend
     fetch('/api/visits.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -182,6 +178,5 @@ export async function trackVisit(path: string): Promise<void> {
     const log = await getPageViewLogger();
     log?.(path);
   } catch {
-    // Tracking must never break the site.
   }
 }

@@ -40,7 +40,6 @@ export default function SeoManager() {
   const { seo, site } = useContent();
 
   useEffect(() => {
-    // The admin area is never indexed.
     if (pathname.startsWith('/admin')) {
       setMeta('name', 'robots', 'noindex, nofollow');
       return;
@@ -76,7 +75,6 @@ export default function SeoManager() {
     setMeta('name', 'twitter:description', description);
     setMeta('name', 'twitter:image', image);
 
-    // Structured data (Google rich results)
     const ld = {
       '@context': 'https://schema.org',
       '@type': 'ProfessionalService',

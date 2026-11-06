@@ -7,7 +7,6 @@ import 'react-pdf/dist/Page/TextLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-// Simple high-quality SVG paths for the tech stack
 const icons = {
   html: (
     <svg viewBox="0 0 24 24" fill="#E34F26">
@@ -55,7 +54,6 @@ const icons = {
     </svg>
   ),
   flutterflow: (
-    // Since FlutterFlow doesn't have a SimpleIcon yet, we use Flutter standard logo
     <svg viewBox="0 0 24 24" fill="#00B5F8">
       <path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z"/>
     </svg>
@@ -113,24 +111,20 @@ const icons = {
 };
 
 const skillsData = [
-  // Frontend
   { name: 'HTML5', category: 'Frontend', icon: icons.html },
   { name: 'CSS', category: 'Frontend', icon: icons.css },
   { name: 'JavaScript', category: 'Frontend', icon: icons.javascript },
   { name: 'React', category: 'Frontend', icon: icons.react },
   { name: 'WordPress', category: 'Frontend', icon: icons.wordpress },
-  // Backend
   { name: 'PHP', category: 'Backend', icon: icons.php },
   { name: 'Python', category: 'Backend', icon: icons.python },
   { name: 'Laravel', category: 'Backend', icon: icons.laravel },
   { name: 'Database Management', category: 'Backend', icon: icons.database },
   { name: 'Software Testing', category: 'Backend', icon: icons.testing },
-  // Design & Tools
   { name: 'Figma', category: 'Design & Tools', icon: icons.figma },
   { name: 'FlutterFlow', category: 'Design & Tools', icon: icons.flutterflow },
   { name: 'CCTV Installation', category: 'Design & Tools', icon: icons.cctv },
   { name: 'Networking', category: 'Design & Tools', icon: icons.networking },
-  // Marketing & AI
   { name: 'SEO & Digital Marketing', category: 'Marketing & AI', icon: icons.seo },
   { name: 'E-Commerce', category: 'Marketing & AI', icon: icons.ecommerce },
   { name: 'Online Sales', category: 'Marketing & AI', icon: icons.sales },
@@ -185,7 +179,6 @@ const certificatesData = [
   { id: 9, name: "5th Kyu Karate", file: cert1, type: "Martial Arts", desc: "Discipline, focus, and continuous self-improvement in traditional Karate." },
 ];
 
-// Helper for the Carousel
 const getCircularOffset = (index: number, currentIndex: number, totalLength: number) => {
   let offset = index - currentIndex;
   const half = Math.floor(totalLength / 2);
@@ -198,7 +191,6 @@ function EducationTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
   const n = educationData.length;
   
-  // Auto-advance every 10 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % n);
@@ -206,21 +198,19 @@ function EducationTimeline() {
     return () => clearInterval(timer);
   }, [n]);
 
-  // Calculate Cx (center X) for the active bump in a 1000px viewBox
   const getCx = (index: number) => {
     return (index + 0.5) * (1000 / n);
   };
   
   const cx = getCx(activeIndex);
   
-  // SVG bezier curve logic for the "bump"
   const pathData = `M 0 80 L ${cx - 80} 80 C ${cx - 40} 80, ${cx - 40} 20, ${cx} 20 C ${cx + 40} 20, ${cx + 40} 80, ${cx + 80} 80 L 1000 80`;
 
   const activeEdu = educationData[activeIndex];
 
   return (
     <div className="contour-timeline-wrapper">
-      {/* Floating Card */}
+      
       <div 
         className="contour-card-container"
         style={{ left: `${cx / 10}%` }}
@@ -244,7 +234,7 @@ function EducationTimeline() {
         </div>
       </div>
 
-      {/* SVG Contour Line */}
+      
       <div className="contour-svg-container">
         <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="contour-svg">
           <path d={pathData} className="contour-path" />
@@ -253,7 +243,7 @@ function EducationTimeline() {
         </svg>
       </div>
 
-      {/* Year Markers */}
+      
       <div className="contour-markers-row">
         {educationData.map((edu, idx) => (
           <div 
@@ -282,7 +272,6 @@ export default function Skills() {
     activeFilter === 'All' || skill.category === activeFilter
   );
 
-  // Define unique gradients for the cards
   const gradients = [
     'linear-gradient(135deg, #1e00ff, #ff007b)',
     'linear-gradient(135deg, #3b82f6, #0091ff)',
@@ -298,7 +287,7 @@ export default function Skills() {
 
   return (
     <div className="skills-page">
-      {/* Hero Section */}
+      
       <PageHero
         title="My Tech"
         accent="Stack"
@@ -325,16 +314,16 @@ export default function Skills() {
               className="skill-card-new"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Vibrant Gradient Background */}
+              
               <div 
                 className="skill-card-bg" 
                 style={{ background: gradients[index % gradients.length] }}
               >
-                {/* Grain overlay for texture */}
+                
                 <div className="skill-card-grain"></div>
               </div>
               
-              {/* Folder Tab Solid Overlay */}
+              
               <div className="skill-card-folder">
                 <div className="skill-tab-content">
                   <div className="skill-icon-wrapper-new">
@@ -358,7 +347,7 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* Education Journey Section */}
+        
         <div className="education-section">
           <div className="education-header">
             <h2 className="education-title">Where I Learned</h2>
@@ -368,7 +357,7 @@ export default function Skills() {
           <EducationTimeline />
         </div>
 
-        {/* Certificates Section */}
+        
         <div className="education-section" style={{marginTop: '4rem'}}>
           <div className="education-header">
             <h2 className="education-title">Certifications</h2>
@@ -427,7 +416,7 @@ export default function Skills() {
             })}
           </div>
 
-          {/* Full-screen PDF Modal */}
+          
           {activeCertId && (() => {
             const certIndex = certificatesData.findIndex(c => c.id === activeCertId);
             const cert = certificatesData[certIndex];
@@ -460,7 +449,7 @@ export default function Skills() {
                     </div>
                   </div>
                   <div className="cert-modal-body">
-                    {/* Previous Button */}
+                    
                     <button 
                       className={`cert-nav-btn cert-nav-prev ${!hasPrev ? 'disabled' : ''}`}
                       disabled={!hasPrev}
@@ -475,7 +464,7 @@ export default function Skills() {
                       <Page pageNumber={1} width={600} renderTextLayer={false} renderAnnotationLayer={false} />
                     </Document>
 
-                    {/* Next Button */}
+                    
                     <button 
                       className={`cert-nav-btn cert-nav-next ${!hasNext ? 'disabled' : ''}`}
                       disabled={!hasNext}

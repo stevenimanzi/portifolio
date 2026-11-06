@@ -7,7 +7,6 @@ import { useContent } from '../content/ContentContext';
 
 const AUTOPLAY_MS = 5000;
 
-// Slide look per distance from the active one (index 0 sits inside the laptop screen).
 const LOOK: Record<number, { tx: number; scale: number; opacity: number; dim: number }> = {
   0: { tx: 0, scale: 1, opacity: 1, dim: 1 },
   1: { tx: 0.78, scale: 0.5, opacity: 0.95, dim: 0.75 },
@@ -24,7 +23,6 @@ const getCircularOffset = (index: number, current: number, total: number) => {
 
 export default function Projects() {
   const { projects } = useContent();
-  // One flat list of slides: project 1's screens, then project 2's, and so on.
   const slides = useMemo(
     () => projects.flatMap((project, projectIndex) =>
       project.images.map((src, i) => ({ src, projectIndex, screen: i + 1, screens: project.images.length }))
@@ -33,7 +31,6 @@ export default function Projects() {
   );
   const total = slides.length;
 
-  // Arriving from the Home page: open on the project that was clicked.
   const [searchParams] = useSearchParams();
   const [indexRaw, setIndex] = useState(() => {
     const wanted = projects.findIndex(p => p.id === searchParams.get('project'));
@@ -42,7 +39,6 @@ export default function Projects() {
   });
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
-  // projects can be added / hidden from the dashboard, so keep the index inside the list
   const index = Math.min(indexRaw, Math.max(0, total - 1));
 
   const current = slides[index];
@@ -56,7 +52,6 @@ export default function Projects() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Warm the cache for the next few screenshots so they never pop in while sliding.
   useEffect(() => {
     if (total === 0) return;
     for (let k = 1; k <= 3; k++) {
@@ -65,7 +60,6 @@ export default function Projects() {
     }
   }, [index, total, slides]);
 
-  // Auto-advance. Re-arms after every change, so a manual click restarts the wait.
   useEffect(() => {
     if (total < 2 || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = setTimeout(() => setIndex(i => (i + 1) % total), AUTOPLAY_MS);
@@ -125,7 +119,7 @@ export default function Projects() {
               if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
             }}
           >
-            {/* Screenshots: only the active one and its neighbours are mounted */}
+            
             {slides.map((slide, i) => {
               const offset = getCircularOffset(i, index, total);
               const distance = Math.abs(offset);

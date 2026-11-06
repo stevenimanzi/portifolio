@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 
-// Public web config (safe to ship in the browser). Data is protected by firestore.rules, not by hiding this.
 export const firebaseConfig = {
   apiKey: 'AIzaSyBMh8tqNlOydX51ln-T6PFSYD5ODMOyb-8',
   authDomain: 'stevenimanzi-46e0f.firebaseapp.com',
@@ -11,7 +10,6 @@ export const firebaseConfig = {
   measurementId: 'G-LZVVD07YCY'
 };
 
-// Authorized admin accounts allowed into /admin.
 export const ADMIN_EMAIL = 'info@stevenimanzi.info';
 export const ADMIN_EMAILS = ['info@stevenimanzi.info', 'stivenimanzi1@gmail.com'];
 

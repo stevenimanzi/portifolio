@@ -74,12 +74,10 @@ async function fetchFromFirestore(): Promise<RawContent> {
 }
 
 async function fetchRaw(): Promise<RawContent> {
-  // Check MySQL PHP API first (Hostinger or local PHP backend)
   const apiData = await fetchFromApi();
   if (apiData && (apiData.services.length > 0 || apiData.site)) {
     return apiData;
   }
-  // Fall back to Firestore if configured, or emptyRaw
   try {
     return await fetchFromFirestore();
   } catch {
@@ -101,7 +99,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
         writeCache(next);
       })
       .catch(() => {
-        // Offline or database not ready: keep the built-in content and retry in a minute
         writeCache(raw, 60 * 1000);
       });
     return () => {

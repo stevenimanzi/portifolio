@@ -26,7 +26,6 @@ export default function Overview() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-    // keep the numbers fresh while the dashboard is open
     const timer = window.setInterval(load, 60_000);
     return () => window.clearInterval(timer);
   }, [load]);

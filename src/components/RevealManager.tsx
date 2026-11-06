@@ -15,30 +15,25 @@ interface Target {
 /* Every section of the site, and how it enters when the visitor scrolls to it.
    Elements are tagged from here, so the page components stay untouched. */
 const TARGETS: Target[] = [
-  // Section titles
   { sel: '.section-header', variant: 'blur' },
   { sel: '.page-intro', variant: 'blur' },
   { sel: '.education-header', variant: 'blur' },
 
-  // Home
   { sel: '.services-section .arc-carousel-container', variant: 'zoom', delay: 120 },
   { sel: '.projects-section .arc-carousel-container', variant: 'zoom', delay: 120 },
   { sel: '.carousel-controls', variant: 'up', delay: 250 },
   { sel: '.testimonial-stage', variant: 'zoom', delay: 120 },
   { sel: '.testimonial-author', variant: 'up', delay: 300 },
 
-  // Services / Projects
   { sel: '.cover-wrap', variant: 'zoom', delay: 100 },
   { sel: '.mb-carousel', variant: 'zoom', delay: 100 },
   { sel: '.mb-visit', variant: 'up', delay: 200 },
 
-  // Skills
   { sel: '.skills-filters', variant: 'up' },
   { sel: '.skill-card-new', variant: 'up', stagger: true },
   { sel: '.contour-timeline-wrapper', variant: 'zoom' },
   { sel: '.education-section .arc-carousel-container', variant: 'zoom', delay: 120 },
 
-  // Contact & shared
   { sel: '.cta-band', variant: 'up' },
   { sel: '.footer-brand', variant: 'left' },
   { sel: '.footer-link-group', variant: 'up', stagger: true },
@@ -102,11 +97,9 @@ export default function RevealManager() {
       });
     };
 
-    // Tag before the browser paints, so nothing flashes visible and then hides again.
     tag();
     check();
 
-    // Content that mounts later (lazy pages, filters) is tagged in the same frame it appears.
     const onDomChange = () => {
       tag();
       check();
@@ -123,7 +116,6 @@ export default function RevealManager() {
       window.removeEventListener('scroll', check);
       window.removeEventListener('resize', check);
       root.classList.remove('rv-on');
-      // leave nothing half-hidden behind when the page changes
       document.querySelectorAll<HTMLElement>('.rv').forEach(el => {
         el.classList.remove('rv', 'is-visible');
         delete el.dataset.rv;

@@ -69,7 +69,6 @@ const timelineData = [
   }
 ];
 
-// Dot positions. Desktop: down the curved arc. Mobile: along a curve across the top.
 const MOBILE_TOPS = ['28%', '50%', '60%', '50%', '28%'];
 const desktopLeft = (i: number) => (i === 2 ? '50%' : i === 1 || i === 3 ? '42%' : '35%');
 
@@ -85,7 +84,6 @@ export default function Timeline() {
   const total = timelineData.length;
 
   useEffect(() => {
-    // Cheap enough to run on every scroll event: it reads one rect and only re-renders
     // when the active year actually changes.
     const update = () => {
       const el = sectionRef.current;
@@ -95,7 +93,6 @@ export default function Timeline() {
       const scrollable = rect.height - stage.offsetHeight;
       if (scrollable <= 0) return;
 
-      // 0 when the stage pins, 1 when it lets go; each year owns an equal slice.
       const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
       setActive(Math.min(total - 1, Math.floor(progress * total)));
     };
@@ -109,7 +106,6 @@ export default function Timeline() {
     };
   }, [total]);
 
-  // Clicking a year scrolls to the middle of that year's slice.
   const goTo = (index: number) => {
     const el = sectionRef.current;
     const stage = stageRef.current;
@@ -128,7 +124,7 @@ export default function Timeline() {
       aria-label="My journey, year by year"
     >
       <div className="timeline-sticky-wrapper" ref={stageRef}>
-        {/* Year arc with the dots */}
+        
         <div className="timeline-arc-container">
           <svg className="timeline-svg timeline-svg-v" viewBox="0 0 100 800" preserveAspectRatio="none" aria-hidden="true">
             <path d="M 0 0 Q 100 400 0 800" fill="transparent" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />

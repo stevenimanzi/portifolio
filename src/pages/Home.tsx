@@ -18,7 +18,6 @@ export default function Home() {
     return offset;
   };
 
-  // Autoplay for Testimonials
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveTestimonialIndex(prev => (prev >= testimonials.length - 1 ? 0 : prev + 1));
@@ -36,12 +35,12 @@ export default function Home() {
         <div className="syntax-content">
 
           
-          {/* Right Quote */}
+          
           <div className="syntax-quote-container">
             <p className="syntax-quote" style={{ whiteSpace: 'pre-line' }}>{site.heroQuote}</p>
           </div>
           
-          {/* Bottom Area */}
+          
           <div className="syntax-bottom">
             <div className="syntax-stats">
               <div className="syntax-stat-text">{startYear} <span className="syntax-arrow">→</span> {currentYear}</div>
@@ -65,7 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 1. Services - Framer TestimonialCarousel Design System */}
+      
       {servicesData.length > 0 && (
         <FramerMarqueeCarousel
           sectionId="services"
@@ -84,10 +83,10 @@ export default function Home() {
         />
       )}
 
-      {/* 2. Scroll timeline: one year at a time */}
+      
       <Timeline />
 
-      {/* 3. Featured Projects - Showcase Cards with Visible UI Screenshots */}
+      
       {projects.length > 0 && (
         <FramerMarqueeCarousel
           sectionId="my-work"
@@ -108,7 +107,7 @@ export default function Home() {
         />
       )}
 
-      {/* 4. Testimonials Section */}
+      
       {testimonials.length > 0 && (
       <section className="testimonials-section section" style={{marginTop: '4rem'}}>
         <div className="container">
@@ -117,14 +116,14 @@ export default function Home() {
             <p style={{color: '#aaa', marginTop: '1rem'}}>What the people I work with have to say.</p>
           </div>
           
-          {/* Hanger Layout */}
+          
           <div className="testimonial-stage" style={{ position: 'relative', marginTop: '2rem', 
             height: '350px',
             display: 'flex', 
             justifyContent: 'center',
             overflow: 'hidden'
           }}>
-            {/* Top horizontal line */}
+            
             <div style={{
               position: 'absolute',
               top: 0,
@@ -134,7 +133,7 @@ export default function Home() {
               background: 'rgba(255,255,255,0.15)'
             }}></div>
 
-            {/* Testimonial Cards */}
+            
             {testimonials.map((test, index) => {
               const offset = getCircularOffset(index, activeTestimonialIndex, testimonials.length);
               
@@ -159,7 +158,7 @@ export default function Home() {
                   flexDirection: 'column',
                   alignItems: 'center'
                 }}>
-                  {/* Vertical string */}
+                  
                   <div style={{
                     width: '1px',
                     height: offset === 0 ? '30px' : '50px',
@@ -167,7 +166,7 @@ export default function Home() {
                     transition: 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)'
                   }}></div>
                   
-                  {/* Card */}
+                  
                   <div 
                     onClick={() => setActiveTestimonialIndex(index)}
                     style={{
@@ -206,7 +205,7 @@ export default function Home() {
             })}
           </div>
 
-          {/* Author Details (Below Hanger) */}
+          
           <div className="testimonial-author" style={{ textAlign: 'center', marginTop: '1rem',
             transition: 'opacity 0.3s ease'
           }}>
@@ -229,7 +228,7 @@ export default function Home() {
             <h4 style={{color: '#fff', margin: 0, fontSize: '1.2rem'}}>{testimonials[activeTestimonialIndex].name}</h4>
             <p style={{color: '#aaa', fontSize: '0.9rem', margin: '0.3rem 0 0 0'}}>{testimonials[activeTestimonialIndex].role}</p>
             
-            {/* Arrows */}
+            
             <div style={{display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1.5rem'}}>
               <button 
                 onClick={() => setActiveTestimonialIndex(prev => prev === 0 ? testimonials.length - 1 : prev - 1)}

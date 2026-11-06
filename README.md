@@ -1,32 +1,65 @@
-# React + TypeScript + Vite
+# Steven Imanzi - Professional Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Official portfolio and client platform for **Steven IMANZI** — Full-Stack Software Developer based in Kigali, Rwanda.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- **Frontend:** React 19, TypeScript, Vite
+- **Styling:** Modular CSS, Framer animations, responsive layouts
+- **Backend API:** PHP 8+ REST API (`public/api/`)
+- **Database:** MySQL (`stevenimanzi_db`)
+- **Cloud & Analytics:** Firebase Auth & Firestore (dual-mode sync), Leaflet maps
+- **PDF Viewer:** React-PDF for verified academic and technical certifications
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## Getting Started
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### 1. Requirements
+- Node.js 18+ & npm
+- PHP 8.2+ with PDO MySQL extension
+- MySQL 8.0+
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+### 2. Local Setup
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/stevenimanzi/portifolio.git
+   cd portifolio
+   ```
+
+2. **Install Node dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start backend API:**
+   ```bash
+   npm run api
+   ```
+   *(Runs on `http://localhost:8000`)*
+
+4. **Start Vite development server:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## Database Configuration
+
+Local MySQL development defaults:
+- **Database:** `stevenimanzi_db`
+- **User:** `root`
+- **Host:** `127.0.0.1`
+
+Schema and seed data are maintained in:
+- `database/schema.sql`
+- `database/stevenimanzi_db.sql`

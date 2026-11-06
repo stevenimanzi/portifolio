@@ -42,12 +42,10 @@ export function useAdminData() {
 export function AdminDataProvider({ children }: { children: ReactNode }) {
   const isMysql = Boolean(getAdminToken());
 
-  // Firestore live subscriptions (only active when not using MySQL token)
   const [fbMessages, setFbMessages] = useState<MessageDoc[]>([]);
   const [fbMessagesLoaded, setFbMessagesLoaded] = useState(false);
   const [fbMessagesError, setFbMessagesError] = useState('');
 
-  // MySQL state
   const [apiMessages, setApiMessages] = useState<MessageDoc[]>([]);
   const [apiRaw, setApiRaw] = useState<RawContent>({
     services: [],
@@ -59,7 +57,6 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
   const [apiLoaded, setApiLoaded] = useState(false);
   const [apiError, setApiError] = useState('');
 
-  // Load from MySQL API
   const loadFromApi = useCallback(async () => {
     const token = getAdminToken();
     if (!token) return;

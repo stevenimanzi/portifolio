@@ -21,7 +21,6 @@ export default function Header() {
   const { pathname } = useLocation();
   const { site } = useContent();
   const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
-  // The menu counts as open only on the route it was opened on, so any navigation closes it.
   const [openOn, setOpenOn] = useState<string | null>(null);
   const isMobileMenuOpen = openOn === pathname;
 
@@ -32,7 +31,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock page scroll while the menu is open, and let Escape close it
   useEffect(() => {
     if (!isMobileMenuOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -68,7 +66,7 @@ export default function Header() {
 
         <span className="header-name">Steven Imanzi</span>
 
-        {/* Desktop links */}
+        
         <div className="header-links">
           {links.map(l => (
             <NavLink key={l.to} to={l.to} className={navClass} title={l.title}>{l.label}</NavLink>

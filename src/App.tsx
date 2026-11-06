@@ -14,7 +14,6 @@ import { ContentProvider } from './content/ContentContext';
 import { trackVisit } from './lib/publicApi';
 import './App.css';
 
-// The admin area (Firebase Auth + full Firestore + all dashboard pages) is only downloaded when someone opens /admin.
 const AdminApp = lazy(() => import('./admin/AdminApp'));
 
 function Shell() {

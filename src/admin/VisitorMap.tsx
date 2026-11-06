@@ -50,7 +50,6 @@ export default function VisitorMap({ visits, height = 380 }: { visits: VisitDoc[
   useEffect(() => {
     if (!holder.current) return;
     const map = L.map(holder.current, { worldCopyJump: true, scrollWheelZoom: false, minZoom: 1, maxZoom: 12 }).setView([12, 20], 2);
-    // OpenStreetMap needs no API key for light use with attribution; the CSS in admin.css darkens it.
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',
       maxZoom: 12

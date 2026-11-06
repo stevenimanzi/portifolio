@@ -63,7 +63,6 @@ export default function AdminLogin() {
     document.title = 'Admin Gateway | Steven Imanzi';
   }, []);
 
-  // Already authenticated: go straight to admin dashboard
   useEffect(() => {
     if (ready && isAdminUser(user)) {
       navigate('/admin', { replace: true });
@@ -118,7 +117,6 @@ export default function AdminLogin() {
         mysqlRejected = true;
       }
     } catch {
-      // Backend offline or local dev without PHP proxy; continue to Firebase
     }
 
     // 2. Secondary / Fallback Authentication: Firebase
@@ -195,7 +193,7 @@ export default function AdminLogin() {
         </div>
       </aside>
 
-      {/* Main authentication card container */}
+      
       <main className="adm-login-main">
         <div className="adm-login-shell">
           <div className="adm-card-glow" aria-hidden="true" />
@@ -223,7 +221,7 @@ export default function AdminLogin() {
             )}
 
             <div className="adm-auth-fields">
-              {/* Email Input */}
+              
               <div className="adm-group">
                 <label htmlFor="adm-email-input" className="adm-label">
                   Email Address
@@ -244,7 +242,7 @@ export default function AdminLogin() {
                 </div>
               </div>
 
-              {/* Password Input */}
+              
               <div className="adm-group">
                 <div className="adm-label-row">
                   <label htmlFor="adm-password-input" className="adm-label">
